@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialise all activity components
         regBtn = findViewById(R.id.button);
         username_et = findViewById(R.id.username_input);
         password_et = findViewById(R.id.password_input);
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginTxtBtn = findViewById(R.id.loginOption);
         progressBar = findViewById(R.id.progressBar);
 
+        // set click listeners for all clickable components
         regBtn.setOnClickListener(this);
         loginTxtBtn.setOnClickListener(this);
 
@@ -50,10 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void registerUser() {
 
+        // store inputs as strings
         String username = username_et.getText().toString().trim();
         String email = email_et.getText().toString().trim();
         String password = password_et.getText().toString().trim();
 
+        // input validation
         if (username.isEmpty()) {
             username_et.setError("Username required");
             username_et.requestFocus();
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) { // ensure correct email format
             email_et.setError("Invalid email");
             email_et.requestFocus();
             return;
@@ -76,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             password_et.setError("Password required");
             password_et.requestFocus();
             return;
+        }
+
+        if (password.length() < 6) { // firebase passwords do not accept < 6 chars
+            password_et.setError("Passwords must be at least 6 characters long");
+            password_et.requestFocus();
         }
     }
 }
