@@ -86,5 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             password_et.setError("Passwords must be at least 6 characters long");
             password_et.requestFocus();
         }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        // write object user to firebase db
     }
 }
