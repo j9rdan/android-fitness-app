@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessApp">
         <activity
+            android:name=".UserLogin"
+            android:exported="false" />
+        <activity
             android:name=".SelectProgram"
             android:exported="false" />
         <activity
