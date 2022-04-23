@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // initialise all activity components
         regBtn = findViewById(R.id.button);
-        username_et = findViewById(R.id.username_input);
-        password_et = findViewById(R.id.password_input);
-        email_et = findViewById(R.id.email_input);
+        username_et = findViewById(R.id.username_reg_input);
+        password_et = findViewById(R.id.password_reg_input);
+        email_et = findViewById(R.id.email_reg_input);
         loginTxtBtn = findViewById(R.id.loginOption);
         progressBar = findViewById(R.id.progressBar);
 
