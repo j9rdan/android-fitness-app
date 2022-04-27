@@ -6,6 +6,7 @@ public class User {
 
     public User() {
 
+        // empty constructor allowing access to class variables for empty objects
     }
 
     public User(String username, String email) {

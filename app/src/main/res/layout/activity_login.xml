@@ -49,6 +49,7 @@
         android:hint="@string/password"
         android:inputType="textPersonName"
         android:padding="10dp"
+        android:password="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -31,7 +31,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signup);
 
         // get an instance of firebase authentication
         mAuth = FirebaseAuth.getInstance();
@@ -102,28 +102,29 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         progressBar.setVisibility(View.VISIBLE);
 
-        // write object user to firebase db
+        // write user object to firebase db
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            User user = new User(username, email);
+                        if (task.isSuccessful()) { // check if user has been registered
+                            User user = new User(username, email); // create user from input
 
                             FirebaseDatabase.getInstance().getReference("Users")
+                                    // return id for registered user & link it to user object
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    // check user has been added to db
                                     if (task.isSuccessful()) {
                                         Toast.makeText(SignupActivity.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
 
                                         // redirect to login
                                     } else {
                                         Toast.makeText(SignupActivity.this, "Registration failed. Please try again", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
                                     }
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
                         } else {
