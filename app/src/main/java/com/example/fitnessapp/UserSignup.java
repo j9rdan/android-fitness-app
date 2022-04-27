@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserSignup extends AppCompatActivity implements View.OnClickListener {
 
     private Button regBtn;
     private EditText username_et, password_et, email_et;
