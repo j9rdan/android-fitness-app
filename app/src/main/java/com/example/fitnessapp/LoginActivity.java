@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class UserLogin extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText username_et, password_et;
     private Button loginBtn;
@@ -41,7 +41,7 @@ public class UserLogin extends AppCompatActivity implements View.OnClickListener
                 resetPassword();
                 break;
             case R.id.regOption:
-                startActivity(new Intent(this, UserSignup.class));
+                startActivity(new Intent(this, SignupActivity.class));
         }
 
     }

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessApp">
         <activity
-            android:name=".UserLogin"
+            android:name=".LoginActivity"
             android:exported="true" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -19,10 +19,10 @@
         </activity>
 
         <activity
-            android:name=".SelectProgram"
+            android:name=".SelectProgramActivity"
             android:exported="false" />
         <activity
-            android:name=".UserSignup"
+            android:name=".SignupActivity"
             android:exported="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
