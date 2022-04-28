@@ -2,7 +2,9 @@ package com.example.fitnessapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +55,20 @@ public class AboutYouActivity extends AppCompatActivity implements View.OnClickL
                 weight_et.requestFocus();
                 return;
             }
+
+            // save user details
+
+            // get current user
+            if (btn_sex.getText().toString().equals("Male")) {
+                // set sex to male
+            } else {
+                // set sex to female
+            }
+
+            // set user age
+            // set user height
+            // set user weight
+            startActivity(new Intent(this, TargetMusclesActivity.class));
         }
 
     }
