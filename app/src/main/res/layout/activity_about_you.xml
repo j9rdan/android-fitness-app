@@ -7,7 +7,7 @@
     tools:context=".AboutYouActivity">
 
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_next_aboutYou"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="150dp"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <ToggleButton
-        android:id="@+id/btn_sex"
+        android:id="@+id/sex_toggle"
         android:layout_width="95dp"
         android:layout_height="51dp"
         android:layout_marginTop="60dp"
@@ -102,7 +102,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <EditText
-        android:id="@+id/editTextDate"
+        android:id="@+id/birthdate_field"
         style="@style/Widget.Material3.AutoCompleteTextView.FilledBox"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
@@ -117,10 +117,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.441"
         app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sex" />
+        app:layout_constraintTop_toBottomOf="@+id/sex_toggle" />
 
     <EditText
-        android:id="@+id/editTextDate2"
+        android:id="@+id/height_field"
         style="@style/Widget.Material3.AutoCompleteTextView.FilledBox"
         android:layout_width="98dp"
         android:layout_height="wrap_content"
@@ -134,10 +134,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
+        app:layout_constraintTop_toBottomOf="@+id/birthdate_field" />
 
     <EditText
-        android:id="@+id/editTextDate4"
+        android:id="@+id/weight_field"
         style="@style/Widget.Material3.AutoCompleteTextView.FilledBox"
         android:layout_width="98dp"
         android:layout_height="wrap_content"
@@ -151,6 +151,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate2" />
+        app:layout_constraintTop_toBottomOf="@+id/height_field" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

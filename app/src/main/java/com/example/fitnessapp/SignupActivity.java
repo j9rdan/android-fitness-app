@@ -55,7 +55,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.button:
                 registerUser();
-//                startActivity(new Intent(this, SelectProgram.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.loginOption:
                 startActivity(new Intent(this, LoginActivity.class));

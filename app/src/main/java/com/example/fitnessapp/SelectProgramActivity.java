@@ -16,6 +16,8 @@ public class SelectProgramActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_program);
 
+        // get buttons & set click listeners
+
         buildMuscle = findViewById(R.id.btn_muscle);
         buildMuscle.setOnClickListener(this);
 

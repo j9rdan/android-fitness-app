@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance(); // get firebase authentication instance
 
+        // initialise all activity components
         username_et = findViewById(R.id.username_login_input);
         password_et = findViewById(R.id.password_login_input);
         loginBtn = findViewById(R.id.loginBtn);
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signUpOption = findViewById(R.id.regOption);
         progressBar = findViewById(R.id.progressBar_login);
 
+        // set click listeners for all clickable components
         loginBtn.setOnClickListener(this);
         forgotPassword.setOnClickListener(this);
         signUpOption.setOnClickListener(this);
