@@ -42,7 +42,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         password_et = findViewById(R.id.password_reg_input);
         email_et = findViewById(R.id.email_reg_input);
         loginTxtBtn = findViewById(R.id.loginOption);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar_signup);
 
         // set click listeners for all clickable components
         regBtn.setOnClickListener(this);
