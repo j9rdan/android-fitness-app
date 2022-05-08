@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessApp">
         <activity
+            android:name=".ChooseSplitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectMusclesActivity"
+            android:exported="false" />
+        <activity
             android:name=".TargetMusclesActivity"
             android:exported="false" />
         <activity
