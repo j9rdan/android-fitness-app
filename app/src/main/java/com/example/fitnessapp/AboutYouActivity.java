@@ -9,10 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class AboutYouActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btn_sex, btn_next;
     private EditText birthdate_et, height_et, weight_et;
+
+    // get instances of firebase auth & realtime db
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
 
 
     @Override
@@ -38,6 +47,8 @@ public class AboutYouActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
 
         String birthdate_str = birthdate_et.getText().toString().trim();
+        String height_str = height_et.getText().toString().trim();
+        String weight_str = weight_et.getText().toString().trim();
 
         if (btn_next.isPressed()) {
 
@@ -46,28 +57,27 @@ public class AboutYouActivity extends AppCompatActivity implements View.OnClickL
                 birthdate_et.setError("Enter a date of birth");
                 birthdate_et.requestFocus();
                 return;
-            } else if (height_et.getText().toString().trim().isEmpty()) {
+            } else if (height_str.isEmpty()) {
                 height_et.setError("Enter a height");
                 height_et.requestFocus();
                 return;
-            } else if (weight_et.getText().toString().trim().isEmpty()) {
+            } else if (weight_str.isEmpty()) {
                 weight_et.setError("Enter a weight");
                 weight_et.requestFocus();
                 return;
             }
 
             // save user details
-
-            // get current user
             if (btn_sex.getText().toString().equals("Male")) {
-                // set sex to male
+                ref.child("sex").setValue("male");
             } else {
-                // set sex to female
+                ref.child("sex").setValue("female");
             }
+            ref.child("birth_date").setValue(birthdate_str);
+            ref.child("height").setValue(height_str);
+            ref.child("weight").setValue(weight_str);
 
-            // set user age
-            // set user height
-            // set user weight
+
             startActivity(new Intent(this, TargetMusclesActivity.class));
         }
 

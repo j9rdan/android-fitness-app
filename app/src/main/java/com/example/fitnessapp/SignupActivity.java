@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -130,6 +131,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             Toast.makeText(SignupActivity.this, "Registration failed. Please try again", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
+                            Log.i("TAG", task.getException().getMessage());
                         }
                     }
                 });

@@ -7,9 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class SelectProgramActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button buildMuscle, buildStrength, buildEndurance, loseFat, homeWorkouts;
+
+    // get instances of firebase auth & realtime db
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +49,23 @@ public class SelectProgramActivity extends AppCompatActivity implements View.OnC
         switch(view.getId()) {
             case R.id.btn_muscle:
                 // set user program type to hypertrophy
+                ref.child("program_type").setValue("hypertrophy");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_strength:
+                ref.child("program_type").setValue("strength");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_endurance:
+                ref.child("program_type").setValue("endurance");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_fat:
+                ref.child("program_type").setValue("lose_weight");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_homeWorkouts:
+                ref.child("program_type").setValue("home");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
         }
