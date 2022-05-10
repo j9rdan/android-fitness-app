@@ -18,6 +18,7 @@ public class TargetMusclesAdapter extends RecyclerView.Adapter<TargetMusclesAdap
     private Context context;
     private RecyclerView recyclerView;
 
+    // create view holder to hold checkboxes
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public View layout;
@@ -29,7 +30,6 @@ public class TargetMusclesAdapter extends RecyclerView.Adapter<TargetMusclesAdap
             checkBox = v.findViewById(R.id.checkBox);
             selectedValues = new ArrayList<>();
         }
-
     }
 
     // main constructor
@@ -39,6 +39,7 @@ public class TargetMusclesAdapter extends RecyclerView.Adapter<TargetMusclesAdap
         this.recyclerView = recyclerView;
     }
 
+    // populate view with checkbox rows from res/layout/checkbox_rows.xml
     public TargetMusclesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.checkbox_rows, parent, false);
@@ -52,15 +53,15 @@ public class TargetMusclesAdapter extends RecyclerView.Adapter<TargetMusclesAdap
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(holder.checkBox.isChecked()){
+                if (holder.checkBox.isChecked()){
                     selectedValues.add(text);
-                }else{
+                } else {
                     selectedValues.remove(text);
                 }
             }
         });
-
     }
+
     public int getItemCount() { return data.size(); }
 
     public List<String> getSelectedValues() { return selectedValues; }
