@@ -77,7 +77,6 @@ public class AboutYouActivity extends AppCompatActivity implements View.OnClickL
             ref.child("height").setValue(height_str);
             ref.child("weight").setValue(weight_str);
 
-
             startActivity(new Intent(this, TargetMusclesActivity.class));
         }
 

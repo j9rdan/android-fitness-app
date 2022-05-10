@@ -39,7 +39,7 @@ public class ChooseSplitActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            
+
             // store workout split for current user
             case R.id.btn_3days:
                 ref.child("split").setValue("3");
