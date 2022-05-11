@@ -11,8 +11,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -35,31 +37,37 @@ public class HomeActivity extends AppCompatActivity {
         programDisplay = findViewById(R.id.userProgram);
         nextWorkoutDisplay = findViewById(R.id.userNextWorkout);
 
+        getProgramData();
+    }
+
+    private void getProgramData() {
+
         // get user program split & update UI
-        ref.child("split").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        ref.child("split").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                String split;
-                if (task.isSuccessful()) {
-                    split = String.valueOf(task.getResult().getValue()) + "-day split";
-                    splitDisplay.setText(split);
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String split = snapshot.getValue(String.class) + "-day split";
+                splitDisplay.setText(split);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("firebase", error.getMessage());
             }
         });
 
         // get user training program type & update UI
-        ref.child("program_type").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        ref.child("program_type").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                String programType;
-                if (task.isSuccessful()) {
-                    programType = String.valueOf(task.getResult().getValue()).toUpperCase();
-                    programDisplay.setText(programType);
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String programType = snapshot.getValue(String.class).toUpperCase();
+                programDisplay.setText(programType);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("firebase", error.getMessage());
             }
         });
 
+        // get next workout & update UI
     }
 }
