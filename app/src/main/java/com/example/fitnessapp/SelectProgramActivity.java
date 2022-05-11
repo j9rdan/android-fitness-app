@@ -61,11 +61,11 @@ public class SelectProgramActivity extends AppCompatActivity implements View.OnC
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_fat:
-                ref.child("program_type").setValue("lose_weight");
+                ref.child("program_type").setValue("lose weight");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_homeWorkouts:
-                ref.child("program_type").setValue("home");
+                ref.child("program_type").setValue("train at home");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
         }
