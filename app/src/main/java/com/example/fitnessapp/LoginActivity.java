@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(LoginActivity.this, SelectProgramActivity.class));
+                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                 progressBar.setVisibility(View.GONE);
                             } else {
                                 progressBar.setVisibility(View.GONE);

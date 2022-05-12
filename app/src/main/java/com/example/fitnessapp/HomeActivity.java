@@ -3,6 +3,7 @@ package com.example.fitnessapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -32,12 +33,27 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // get activity components
-        splitDisplay = findViewById(R.id.userSplit);
-        programDisplay = findViewById(R.id.userProgram);
-        nextWorkoutDisplay = findViewById(R.id.userNextWorkout);
+        // check if current user has completed sign up flow:
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.hasChild("program_type"))
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            }
+            @Override public void onCancelled(@NonNull DatabaseError error) { }
+        });
 
-        getProgramData();
+        // check if user is logged in
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+        } else {
+            // get activity components
+            splitDisplay = findViewById(R.id.userSplit);
+            programDisplay = findViewById(R.id.userProgram);
+            nextWorkoutDisplay = findViewById(R.id.userNextWorkout);
+
+            getProgramData();
+        }
     }
 
     private void getProgramData() {
