@@ -56,7 +56,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.button:
                 registerUser();
-                startActivity(new Intent(this, LoginActivity.class));
+//                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.loginOption:
                 startActivity(new Intent(this, LoginActivity.class));
@@ -121,7 +121,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                     if (task.isSuccessful()) {
                                         Toast.makeText(SignupActivity.this, "Successful registration", Toast.LENGTH_LONG).show();
 
-                                        // redirect to login
+                                        // sign user in & begin sign up flow
+                                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful())
+                                                    startActivity(new Intent(SignupActivity.this, SelectProgramActivity.class));
+                                            }
+                                        });
+
                                     } else {
                                         Toast.makeText(SignupActivity.this, "Registration failed. Please try again", Toast.LENGTH_LONG).show();
                                     }

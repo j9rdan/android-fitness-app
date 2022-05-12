@@ -6,7 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
+    <Button
+        android:id="@+id/btn_startWorkout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Start"
+        android:textAllCaps="false"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
     <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -92,4 +106,15 @@
 
         </androidx.cardview.widget.CardView>
     </androidx.gridlayout.widget.GridLayout>
+
+    <com.applandeo.materialcalendarview.CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="344dp"
+        android:layout_height="428dp"
+        app:headerColor="@color/white"
+        app:headerLabelColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
