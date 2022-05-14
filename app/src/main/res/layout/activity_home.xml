@@ -10,7 +10,7 @@
         android:id="@+id/btn_startWorkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Start"
         android:textAllCaps="false"
@@ -98,7 +98,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
                     android:singleLine="false"
-                    android:text="[WORKOUT]"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textSize="20sp" />
 
@@ -107,15 +106,29 @@
         </androidx.cardview.widget.CardView>
     </androidx.gridlayout.widget.GridLayout>
 
-    <com.applandeo.materialcalendarview.CalendarView
+    <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="336dp"
-        android:layout_height="426dp"
+        android:layout_width="391dp"
+        android:layout_height="311dp"
         android:layout_marginTop="8dp"
-        app:headerColor="@color/purple_500"
-        app:headerLabelColor="@color/white"
+        android:dateTextAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout">
+
+    </CalendarView>
+
+    <!--    <com.applandeo.materialcalendarview.CalendarView-->
+<!--        android:id="@+id/calendarView"-->
+<!--        android:layout_width="336dp"-->
+<!--        android:layout_height="426dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        app:headerColor="@color/purple_500"-->
+<!--        app:headerLabelColor="@color/white"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/gridLayout"-->
+<!--        app:disabledDaysLabelsColor="@color/white"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
