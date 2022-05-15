@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +32,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     TextView splitDisplay, programDisplay, nextWorkoutDisplay;
     Button btn_start;
     android.widget.CalendarView calendarHome;
+    BottomNavigationView bottomNav;
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -53,6 +56,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         calendarHome = findViewById(R.id.calendarView);
         calendarHome.setOnClickListener(this);
 
+        bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setSelectedItemId(R.id.home);
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                // set up navigation
+                switch(item.getItemId()) {
+                    case R.id.home:
+                        return true;
+                    case R.id.progress:
+                        startActivity(new Intent(getApplicationContext(), AnalyticsActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.info:
+                        startActivity(new Intent(getApplicationContext(), MoreInfoActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.profile:
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
+
         // check if current user has completed sign up flow:
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -74,7 +104,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 String date = dayOfMonth + "-" + (month + 1) + "-" + year;
-
                 workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
