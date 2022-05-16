@@ -136,6 +136,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             editor.putString("selectedDate", dateSelection);
                             editor.apply();
                             startActivity(new Intent(HomeActivity.this, PreviousWorkoutActivity.class));
+                        } else if (dateSelection.equals(today)) { // if user clicks today
+                            startActivity(new Intent(HomeActivity.this, TodayWorkoutActivity.class));
                         }
                     }
 
@@ -208,6 +210,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.btn_startWorkout:
+                startActivity(new Intent(HomeActivity.this, TodayWorkoutActivity.class));
+                break;
+            case R.id.btn_timer:
+                break;
+        }
 
     }
 

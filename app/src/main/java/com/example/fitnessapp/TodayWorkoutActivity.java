@@ -2,20 +2,14 @@ package com.example.fitnessapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
@@ -28,51 +22,43 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
-public class PreviousWorkoutActivity extends AppCompatActivity implements View.OnClickListener {
+public class TodayWorkoutActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView prevWorkoutDate, prevWorkoutName;
-    private Button btn_close, btn_share;
-
-    // recycler view
+    private TextView todayDate, todayWorkoutName;
+    private Button btn_complete, btn_timer;
     private RecyclerView recyclerView;
     private ExerciseListAdapter adapter;
-    private ShareActionProvider mySAP;
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+    // get current date
+    Calendar c = Calendar.getInstance();
+    int dayNow = c.get(Calendar.DAY_OF_MONTH);
+    int monthNow = c.get(Calendar.MONTH)+1;
+    int yearNow = c.get(Calendar.YEAR);
+    String today = dayNow + "-" + monthNow + "-" + yearNow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_previous_workout);
+        setContentView(R.layout.activity_today_workout);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = pref.edit();
-        Log.w("TODAY", pref.getString("today",""));
-
-        prevWorkoutDate = findViewById(R.id.prevWorkoutDate);
-        prevWorkoutName = findViewById(R.id.prevWorkoutName);
-        btn_share = findViewById(R.id.btn_sharePrevWorkout);
-        btn_share.setOnClickListener(this);
-        btn_close = findViewById(R.id.btn_closePrevWorkout);
-        btn_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PreviousWorkoutActivity.this, HomeActivity.class));
-            }
-        });
-
-        // recycler view
-        recyclerView = findViewById(R.id.prevWorkoutRecycler);
+        // initialise activity components
+        todayDate = findViewById(R.id.todayDate);
+        todayWorkoutName = findViewById(R.id.todayWorkoutName);
+        btn_complete = findViewById(R.id.btn_complete);
+        btn_complete.setOnClickListener(this);
+        btn_timer = findViewById(R.id.btn_timer);
+        btn_timer.setOnClickListener(this);
+        recyclerView = findViewById(R.id.todayWorkoutRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -85,68 +71,40 @@ public class PreviousWorkoutActivity extends AppCompatActivity implements View.O
                     storedWorkouts_al.add(d);
                 }
 
-                String date = pref.getString("selectedDate", "");
-                Log.w("DATE", date);
-
                 // get day # for previous selected workout
                 int dayCount;
                 for (dayCount = 0; dayCount < storedWorkouts_al.size(); dayCount++) {
-                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) { dayCount++; break; }
+                    if (storedWorkouts_al.get(dayCount).getKey().equals(today)) { dayCount++;
+                        break;
+                    }
                 }
 
                 // format data
-                String[] workoutData = snapshot.child(date).getValue().toString().split(";");
+                String[] workoutData = snapshot.child(today).getValue().toString().split(";");
                 Log.w("READ", Arrays.toString(workoutData));
                 ArrayList<String> workoutData_al = new ArrayList<>();
                 for (int i = 0; i < workoutData.length-1; i++) {
-                    // workout_name - Xkg   Y/10
+                    // workout_name - Xkg
                     workoutData_al.add(workoutData[i].split(",")[0] + " - "
                             + workoutData[i].split(",")[1]
-                            + " kg\t\t\t" + workoutData[i].split(",")[2] + "/10");
+                            + " kg");
                 }
                 String[] formattedData = workoutData_al.toArray(new String[workoutData_al.size()]);
                 Log.w("FORMAT", Arrays.toString(formattedData));
 
                 // set displays
-                prevWorkoutDate.setText(date + " | Day " + dayCount);
-                prevWorkoutName.setText(workoutData[workoutData.length-1].toUpperCase() + " DAY");
+                todayDate.setText("TODAY | Day " + dayCount);
+                todayWorkoutName.setText(workoutData[workoutData.length-1].toUpperCase() + " DAY");
                 adapter = new ExerciseListAdapter(formattedData, getApplicationContext());
                 recyclerView.setAdapter(adapter);
-                editor.clear();
-
 
             }
             @Override public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.share_menu, menu);
-//        MenuItem menuItem = menu.findItem(R.id.btn_sharePrevWorkout);
-//        mySAP = (ShareActionProvider) menuItem.getActionProvider();
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.btn_sharePrevWorkout) {
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-
     @Override
     public void onClick(View view) {
-
-//        if (view.getId() == R.id.btn_sharePrevWorkout) {
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType("text/html");
-//            intent.putExtra(Intent.EXTRA_TEXT, "Share this workout");
-//            mySAP.setShareIntent(intent);
-//        }
 
     }
 }
