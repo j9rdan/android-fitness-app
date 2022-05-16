@@ -1,15 +1,23 @@
 package com.example.fitnessapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,16 +40,28 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     android.widget.CalendarView calendarHome;
     BottomNavigationView bottomNav;
 
+
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
+    // get current date
+    Calendar c = Calendar.getInstance();
+    int dayNow = c.get(Calendar.DAY_OF_MONTH);
+    int monthNow = c.get(Calendar.MONTH)+1;
+    int yearNow = c.get(Calendar.YEAR);
+    String today = dayNow + "-" + monthNow + "-" + yearNow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // define shared preferences
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = pref.edit();
 
         // get activity components
         splitDisplay = findViewById(R.id.userSplit);
@@ -103,14 +121,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         calendarHome.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
-                String date = dayOfMonth + "-" + (month + 1) + "-" + year;
+                String dateSelection = dayOfMonth + "-" + (month + 1) + "-" + year;
                 workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.hasChild(date)) { // if there is no saved workout for a date
-                            Toast.makeText(HomeActivity.this, date + ": No recorded workout", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // open workout info
+                        if (!snapshot.hasChild(dateSelection)) { // if there is no saved workout for a date
+                            Toast.makeText(HomeActivity.this, dateSelection + ": No recorded workout", Toast.LENGTH_SHORT).show();
+                        } else if (dateSelection.compareTo(today) < 0) { // if chosen date is in past
+                            editor.putString("selectedDate", dateSelection);
+                            editor.apply();
+                            startActivity(new Intent(HomeActivity.this, PreviousWorkoutActivity.class));
                         }
                     }
 
@@ -150,15 +170,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // get next workout
+        // TODO: add check if there is a next workout
         workoutsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // get current date
-                Calendar c = Calendar.getInstance();
-                int dayNow = c.get(Calendar.DAY_OF_MONTH);
-                int monthNow = c.get(Calendar.MONTH)+1;
-                int yearNow = c.get(Calendar.YEAR);
-                String today = dayNow + "-" + monthNow + "-" + yearNow;
 
                 // get children & store in array list
                 Iterable<DataSnapshot> storedWorkouts_i = snapshot.getChildren();
@@ -166,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 for (DataSnapshot d : storedWorkouts_i) {
                     storedWorkouts_al.add(d);
                 }
-                // get position of next workout
+                // get position of next workout & day # for selected workout
                 int i;
                 for (i = 0; i < storedWorkouts_al.size(); i++) {
                     if (storedWorkouts_al.get(i).getKey().equals(today)) break;
@@ -178,6 +193,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("NEXT", nextWorkoutName);
 
                 nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
+
+
+
             }
 
             @Override public void onCancelled(@NonNull DatabaseError error) { }
@@ -188,4 +206,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
 
     }
+
+//    public void createDialog() {
+//
+//        // dialog for previous workout
+//        final View prevWorkoutView = getLayoutInflater().inflate(R.layout.previous_workout, null);
+//
+//
+//
+//    }
+
+
 }
