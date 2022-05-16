@@ -54,14 +54,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     int yearNow = c.get(Calendar.YEAR);
     String today = dayNow + "-" + monthNow + "-" + yearNow;
 
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         // define shared preferences
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = pref.edit();
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = pref.edit();
+        editor.putString("today", today);
 
         // get activity components
         splitDisplay = findViewById(R.id.userSplit);
@@ -193,7 +198,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("NEXT", nextWorkoutName);
 
                 nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
-
 
 
             }

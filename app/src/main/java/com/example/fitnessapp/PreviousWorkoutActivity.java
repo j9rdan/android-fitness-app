@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PreviousWorkoutActivity extends AppCompatActivity {
 
     private TextView prevWorkoutDate, prevWorkoutName;
@@ -38,10 +41,17 @@ public class PreviousWorkoutActivity extends AppCompatActivity {
     DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_workout);
+
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = pref.edit();
+        Log.w("TODAY", pref.getString("today",""));
 
         prevWorkoutDate = findViewById(R.id.prevWorkoutDate);
         prevWorkoutName = findViewById(R.id.prevWorkoutName);
@@ -63,13 +73,28 @@ public class PreviousWorkoutActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = pref.edit();
+                // get children & store in array list
+                Iterable<DataSnapshot> storedWorkouts_i = snapshot.getChildren();
+                List<DataSnapshot> storedWorkouts_al = new ArrayList<>();
+                for (DataSnapshot d : storedWorkouts_i) {
+                    storedWorkouts_al.add(d);
+                }
+
                 String date = pref.getString("selectedDate", "");
-                int dayCount = pref.getInt("dayCount",0);
+                Log.w("DATE", date);
+
+                // get day # for previous selected workout
+                int dayCount;
+                for (dayCount = 0; dayCount < storedWorkouts_al.size(); dayCount++) {
+                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) {
+                        dayCount++;
+                        break;
+                    }
+                }
                 String[] workoutData = snapshot.child(date).getValue().toString().split(";");
                 prevWorkoutDate.setText(date + " | Day " + dayCount);
                 prevWorkoutName.setText(workoutData[workoutData.length-1].toUpperCase() + " DAY");
+                editor.clear();
 
 
             }
