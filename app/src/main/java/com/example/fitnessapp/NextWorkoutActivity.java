@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -121,6 +122,15 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
 
+        switch (view.getId()) {
+            case R.id.btn_complete:
+                startActivity(new Intent(NextWorkoutActivity.this, EvaluationActivity.class));
+                break;
+
+            case R.id.btn_timer:
+                // open alarm clock or set timer for current time +2mins
+                break;
+        }
 
 
     }
