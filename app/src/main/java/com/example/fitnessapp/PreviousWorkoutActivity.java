@@ -29,7 +29,7 @@ import java.util.List;
 public class PreviousWorkoutActivity extends AppCompatActivity {
 
     private TextView prevWorkoutDate, prevWorkoutName;
-    private Button btn_close;
+    private Button btn_close, btn_share;
 
     // recycler view
     private RecyclerView recyclerView;
@@ -54,6 +54,13 @@ public class PreviousWorkoutActivity extends AppCompatActivity {
 
         prevWorkoutDate = findViewById(R.id.prevWorkoutDate);
         prevWorkoutName = findViewById(R.id.prevWorkoutName);
+        btn_share = findViewById(R.id.btn_sharePrevWorkout);
+        btn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // share action provider
+            }
+        });
         btn_close = findViewById(R.id.btn_closePrevWorkout);
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
