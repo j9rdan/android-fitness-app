@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitnessApp">
         <activity
-            android:name=".TodayWorkoutActivity"
+            android:name=".NextWorkoutActivity"
             android:exported="false" />
         <activity
             android:name=".PreviousWorkoutActivity"

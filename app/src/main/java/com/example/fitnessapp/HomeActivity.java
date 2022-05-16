@@ -1,10 +1,7 @@
 package com.example.fitnessapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,11 +10,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,14 +124,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.hasChild(dateSelection)) { // if there is no saved workout for a date
+                        // if there is no saved workout for a past date
+                        if (!snapshot.hasChild(dateSelection) && dateSelection.compareTo(today) < 0) {
                             Toast.makeText(HomeActivity.this, dateSelection + ": No recorded workout", Toast.LENGTH_SHORT).show();
-                        } else if (dateSelection.compareTo(today) < 0) { // if chosen date is in past
+                            // if there is no workout for a future date
+                        } else if (!snapshot.hasChild(dateSelection) && dateSelection.compareTo(today) > 0) {
+                            Toast.makeText(HomeActivity.this, dateSelection + ": No upcoming workout", Toast.LENGTH_SHORT).show();
+                            // if chosen date has past workout
+                        } else if (dateSelection.compareTo(today) < 0) {
                             editor.putString("selectedDate", dateSelection);
                             editor.apply();
                             startActivity(new Intent(HomeActivity.this, PreviousWorkoutActivity.class));
-                        } else if (dateSelection.equals(today)) { // if user clicks today
-                            startActivity(new Intent(HomeActivity.this, TodayWorkoutActivity.class));
+                            // if user clicks today/future date
+                        } else if (dateSelection.compareTo(today) >= 0) {
+                            editor.putString("selectedDate", dateSelection);
+                            editor.apply();
+                            startActivity(new Intent(HomeActivity.this, NextWorkoutActivity.class));
                         }
                     }
 
@@ -213,7 +215,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.btn_startWorkout:
-                startActivity(new Intent(HomeActivity.this, TodayWorkoutActivity.class));
+                startActivity(new Intent(HomeActivity.this, NextWorkoutActivity.class));
                 break;
             case R.id.btn_timer:
                 break;
