@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PreviousWorkoutActivity extends AppCompatActivity {
@@ -33,12 +34,10 @@ public class PreviousWorkoutActivity extends AppCompatActivity {
     // recycler view
     private RecyclerView recyclerView;
     private ExerciseListAdapter adapter;
-    final private String[] testStr = {"a", "b", "c", "d", "e", "f"};
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     SharedPreferences pref;
@@ -66,8 +65,7 @@ public class PreviousWorkoutActivity extends AppCompatActivity {
         // recycler view
         recyclerView = findViewById(R.id.prevWorkoutRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ExerciseListAdapter(testStr, this);
-        recyclerView.setAdapter(adapter);
+
 
         workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -86,14 +84,29 @@ public class PreviousWorkoutActivity extends AppCompatActivity {
                 // get day # for previous selected workout
                 int dayCount;
                 for (dayCount = 0; dayCount < storedWorkouts_al.size(); dayCount++) {
-                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) {
-                        dayCount++;
+                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) { dayCount++;
                         break;
                     }
                 }
+
+                // format data
                 String[] workoutData = snapshot.child(date).getValue().toString().split(";");
+                Log.w("READ", Arrays.toString(workoutData));
+                ArrayList<String> workoutData_al = new ArrayList<>();
+                for (int i = 0; i < workoutData.length-1; i++) {
+                    // workout_name - Xkg   Y/10
+                    workoutData_al.add(workoutData[i].split(",")[0] + " - "
+                            + workoutData[i].split(",")[1]
+                            + " kg\t\t\t" + workoutData[i].split(",")[2] + "/10");
+                }
+                String[] formattedData = workoutData_al.toArray(new String[workoutData_al.size()]);
+                Log.w("FORMAT", Arrays.toString(formattedData));
+
+                // set displays
                 prevWorkoutDate.setText(date + " | Day " + dayCount);
                 prevWorkoutName.setText(workoutData[workoutData.length-1].toUpperCase() + " DAY");
+                adapter = new ExerciseListAdapter(formattedData, getApplicationContext());
+                recyclerView.setAdapter(adapter);
                 editor.clear();
 
 
