@@ -39,11 +39,11 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     // get current date
-    Calendar c = Calendar.getInstance();
-    int dayNow = c.get(Calendar.DAY_OF_MONTH);
-    int monthNow = c.get(Calendar.MONTH)+1;
-    int yearNow = c.get(Calendar.YEAR);
-    String today = dayNow + "-" + monthNow + "-" + yearNow;
+//    Calendar c = Calendar.getInstance();
+//    int dayNow = c.get(Calendar.DAY_OF_MONTH);
+//    int monthNow = c.get(Calendar.MONTH)+1;
+//    int yearNow = c.get(Calendar.YEAR);
+    String today = getToday();
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -104,12 +104,16 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
                 // set displays
                 if (date.equals(today)) {
                     nextDate.setText("TODAY | Day " + dayCount);
+                    editor.putString("thisWorkoutDate", nextDate.getText().toString());
                 } else {
                     nextDate.setText(date + " | Day " + dayCount);
                     btn_complete.setVisibility(View.INVISIBLE); // hide action buttons for future dates
                     btn_timer.setVisibility(View.INVISIBLE);
                 }
                 nextWorkoutName.setText(workoutData[workoutData.length-1].toUpperCase() + " DAY");
+                editor.putString("thisWorkoutName", nextWorkoutName.getText().toString());
+                editor.apply();
+
                 adapter = new ExerciseListAdapter(formattedData, getApplicationContext());
                 recyclerView.setAdapter(adapter);
 
@@ -131,7 +135,32 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
                 // open alarm clock or set timer for current time +2mins
                 break;
         }
-
-
     }
+
+    public String getToday() {
+        Calendar c = Calendar.getInstance();
+        int dayNow = c.get(Calendar.DAY_OF_MONTH);
+        int monthNow = c.get(Calendar.MONTH)+1;
+        int yearNow = c.get(Calendar.YEAR);
+        String today;
+
+        // d < 10, m < 10 -> 0x-0x-yyyy
+        // d < 10, m > 10 -> 0x-mm-yyyy
+        // d > 10, m < 10 -> dd-0x-yyyy
+        // d > 10, m > 10 -> dd-mm-yyyy
+
+        if (dayNow < 10 && monthNow < 10) {
+            today = "0" + dayNow + "-0" + monthNow + "-" + yearNow;
+        } else if (dayNow < 10 && monthNow > 10) {
+            today = "0" + dayNow + "-" + monthNow + "-" + yearNow;
+        } else if (dayNow > 10 && monthNow < 10) {
+            today = dayNow + "-0" + monthNow + "-" + yearNow;
+        } else {
+            today = dayNow + "-" + monthNow + "-" + yearNow;
+        }
+
+        return today;
+    }
+
+
 }

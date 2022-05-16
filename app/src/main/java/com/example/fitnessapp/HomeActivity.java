@@ -42,11 +42,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     // get current date
-    Calendar c = Calendar.getInstance();
-    int dayNow = c.get(Calendar.DAY_OF_MONTH);
-    int monthNow = c.get(Calendar.MONTH)+1;
-    int yearNow = c.get(Calendar.YEAR);
-    String today = dayNow + "-" + monthNow + "-" + yearNow;
+    String today = getToday();
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -120,16 +116,28 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         calendarHome.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
-                String dateSelection = dayOfMonth + "-" + (month + 1) + "-" + year;
+                // format date
+                String dateSelection;
+                if (dayOfMonth < 10 && (month + 1) < 10) {
+                    dateSelection = "0" + dayOfMonth + "-0" + (month + 1) + "-" + year;
+                } else if (dayOfMonth < 10 && (month + 1) > 10) {
+                    dateSelection = "0" + dayOfMonth + "-" + (month + 1) + "-" + year;
+                } else if (dayOfMonth > 10 && (month + 1) < 10) {
+                    dateSelection = dayOfMonth + "-0" + (month + 1) + "-" + year;
+                } else {
+                    dateSelection = dayOfMonth + "-" + (month + 1) + "-" + year;
+                }
                 workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         // if there is no saved workout for a past date
                         if (!snapshot.hasChild(dateSelection) && dateSelection.compareTo(today) < 0) {
                             Toast.makeText(HomeActivity.this, dateSelection + ": No recorded workout", Toast.LENGTH_SHORT).show();
+                            Log.w("COMPARETO", String.valueOf(dateSelection.compareTo(today)));
                             // if there is no workout for a future date
                         } else if (!snapshot.hasChild(dateSelection) && dateSelection.compareTo(today) > 0) {
                             Toast.makeText(HomeActivity.this, dateSelection + ": No upcoming workout", Toast.LENGTH_SHORT).show();
+                            Log.w("COMPARETO", String.valueOf(dateSelection.compareTo(today)));
                             // if chosen date has past workout
                         } else if (dateSelection.compareTo(today) < 0) {
                             editor.putString("selectedDate", dateSelection);
@@ -215,6 +223,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.btn_startWorkout:
+                editor.putString("selectedDate", today);
+                editor.apply();
                 startActivity(new Intent(HomeActivity.this, NextWorkoutActivity.class));
                 break;
             case R.id.btn_timer:
@@ -223,14 +233,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-//    public void createDialog() {
-//
-//        // dialog for previous workout
-//        final View prevWorkoutView = getLayoutInflater().inflate(R.layout.previous_workout, null);
-//
-//
-//
-//    }
+    public String getToday() {
+        Calendar c = Calendar.getInstance();
+        int dayNow = c.get(Calendar.DAY_OF_MONTH);
+        int monthNow = c.get(Calendar.MONTH)+1;
+        int yearNow = c.get(Calendar.YEAR);
+        String today;
+
+        // d < 10, m < 10 -> 0x-0x-yyyy
+        // d < 10, m > 10 -> 0x-mm-yyyy
+        // d > 10, m < 10 -> dd-0x-yyyy
+        // d > 10, m > 10 -> dd-mm-yyyy
+
+        if (dayNow < 10 && monthNow < 10) {
+            today = "0" + dayNow + "-0" + monthNow + "-" + yearNow;
+        } else if (dayNow < 10 && monthNow > 10) {
+            today = "0" + dayNow + "-" + monthNow + "-" + yearNow;
+        } else if (dayNow > 10 && monthNow < 10) {
+            today = dayNow + "-0" + monthNow + "-" + yearNow;
+        } else {
+            today = dayNow + "-" + monthNow + "-" + yearNow;
+        }
+
+        return today;
+    }
 
 
 }

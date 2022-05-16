@@ -11,4 +11,5 @@
     <string name="complete">Complete</string>
     <string name="timer">Timer</string>
     <string name="done">Done</string>
+    <string name="rate_difficulty">Rate the difficulty of each exercise\n(1 = too easy, 10 = maximum effort)</string>
 </resources>
