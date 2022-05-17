@@ -10,7 +10,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="208dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Select a program type"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -52,52 +52,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_muscle" />
 
-    <Button
-        android:id="@+id/btn_endurance"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="50dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="build endurance"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:cornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_strength" />
-
-    <Button
-        android:id="@+id/btn_fat"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="50dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="fat loss"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:cornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_endurance" />
-
-    <Button
-        android:id="@+id/btn_homeWorkouts"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="50dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="home workouts"
-        android:textSize="18sp"
-        app:cornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_fat"
-        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
