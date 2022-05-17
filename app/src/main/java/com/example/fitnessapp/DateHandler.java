@@ -32,9 +32,9 @@ public class DateHandler {
         return DateHandler.formatDate(today);
     }
 
-    public static String get7DaysFromNow() {
+    public static String getFutureDate(int daysFromNow) {
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, 7);
+        c.add(Calendar.DAY_OF_MONTH, daysFromNow);
         int dd = c.get(Calendar.DAY_OF_MONTH);
         int mm = c.get(Calendar.MONTH)+1;
         int yyyy = c.get(Calendar.YEAR);

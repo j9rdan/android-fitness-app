@@ -21,16 +21,17 @@ import java.util.List;
 public class SelectMusclesActivity extends AppCompatActivity implements View.OnClickListener {
 
     // all muscles that can be targeted
-    final String[] allMuscles = new String[] {"Chest: upper", "Chest: mid", "Chest: lower",
-                                            "Delts: anterior (front)", "Delts: lateral (side)",
-                                            "Delts: posterior (rear)", "Triceps: long head",
-                                            "Triceps: lateral head", "Triceps: medial head",
-                                            "Back: trapezius (traps)", "Back: latissimus dorsi (lats)",
-                                            "Back: lower", "Biceps: short head",
-                                            "Biceps: long head", "Biceps: brachialis",
-                                            "Biceps: brachioradialis (forearm)", "Legs: quadriceps (quads)",
-                                            "Legs: glutes", "Legs: hamstrings", "Legs: calves", "Core"};
+//    final String[] allMuscles = new String[] {"Chest: upper", "Chest: mid", "Chest: lower",
+//                                            "Delts: anterior (front)", "Delts: lateral (side)",
+//                                            "Delts: posterior (rear)", "Triceps: long head",
+//                                            "Triceps: lateral head", "Triceps: medial head",
+//                                            "Back: trapezius (traps)", "Back: latissimus dorsi (lats)",
+//                                            "Back: lower", "Biceps: short head",
+//                                            "Biceps: long head", "Biceps: brachialis",
+//                                            "Biceps: brachioradialis (forearm)", "Legs: quadriceps (quads)",
+//                                            "Legs: glutes", "Legs: hamstrings", "Legs: calves", "Core"};
 
+    final String[] allMuscles = {"Chest", "Shoulders", "Triceps", "Back", "Biceps", "Legs"};
     List<String> targetedMuscles;   // user-selected muscles
 
     // declare views

@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,10 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class EvaluationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,6 +37,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
     private DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     private String today = DateHandler.getToday();
@@ -64,7 +65,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         date.setText(pref.getString("thisWorkoutDate",""));
         workoutName.setText(pref.getString("thisWorkoutName",""));
 
-        workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        workoutsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String date = pref.getString("selectedDate", "");
@@ -95,7 +96,8 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                 btn_done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        adjustVolume(workoutData);
+                        String[] results = adjustVolume(workoutData);
+                        updateDatabase(results);
                         startActivity(new Intent(EvaluationActivity.this, HomeActivity.class));
                     }
                 });
@@ -130,7 +132,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         return ratings;
     }
 
-    public void adjustVolume(String[] workout) {
+    public String[] adjustVolume(String[] workout) {
 
         // get ratings
         ArrayList<String> ratings_str = getRatings();
@@ -152,6 +154,10 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
 
             multipliers[i] = mult;  // add to multipliers list
         }
+
+        Log.w("RATINGS", Arrays.toString(ratings));
+        Log.w("MULTS", Arrays.toString(multipliers));
+
         String completeToday = "";
         String nextWorkout = "";
 
@@ -169,8 +175,36 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         Log.w("NEXT WEEK", nextWorkout);
         Log.w("TODAY", today);
 
+        return new String[]{completeToday, nextWorkout};
+
+    }
+
+    public void updateDatabase(String[] results) {
+        String completeToday = results[0];
+        String nextWorkout = results[1];
+
         // overwrite current child with ratings & create a new workout for same day next week
         workoutsRef.child(today).setValue(completeToday);
-        workoutsRef.child(DateHandler.get7DaysFromNow()).setValue(nextWorkout);
+        userRef.child("split").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String futureDate;
+                int step = 0;
+                int split = Integer.parseInt(snapshot.getValue().toString());
+                switch (split) {
+                    case 3: step = 7;break;
+                    case 4: step = 4;break;
+                    case 5: step = 3;break;
+                    case 6: step = 2;break;
+                }
+                futureDate = DateHandler.getFutureDate(step);
+                Log.w("FUTUREDATE", futureDate);
+                workoutsRef.child(futureDate).setValue(nextWorkout);
+                Toast.makeText(EvaluationActivity.this, futureDate + ": Workout created", Toast.LENGTH_SHORT).show();
+            }
+            @Override public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+
     }
 }
