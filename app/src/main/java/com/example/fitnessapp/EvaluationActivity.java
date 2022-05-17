@@ -95,8 +95,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                 btn_done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String[] results = adjustVolume(workoutData);
-                        updateDatabase(results);
+                        adjustVolume(workoutData);
                         startActivity(new Intent(EvaluationActivity.this, HomeActivity.class));
                     }
                 });
@@ -131,7 +130,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         return ratings;
     }
 
-    public String[] adjustVolume(String[] workout) {
+    public void adjustVolume(String[] workout) {
 
         // get ratings
         ArrayList<String> ratings_str = getRatings();
@@ -153,8 +152,8 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
 
             multipliers[i] = mult;  // add to multipliers list
         }
-        String completeToday = "";  // to overwrite current db child with ratings included
-        String nextWorkout = "";    // create a new workout for same day next week
+        String completeToday = "";
+        String nextWorkout = "";
 
         for (int i = 0; i < workout.length-1; i++) {
             String[] exercise = workout[i].split(",");
@@ -170,16 +169,8 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         Log.w("NEXT WEEK", nextWorkout);
         Log.w("TODAY", today);
 
-        return new String[]{completeToday, nextWorkout};  // save result strings
-
-    }
-
-    public void updateDatabase(String[] newChildren) {
-        String completeToday = newChildren[0];
-        String nextWorkout = newChildren[1];
-
+        // overwrite current child with ratings & create a new workout for same day next week
         workoutsRef.child(today).setValue(completeToday);
         workoutsRef.child(DateHandler.get7DaysFromNow()).setValue(nextWorkout);
-
     }
 }
