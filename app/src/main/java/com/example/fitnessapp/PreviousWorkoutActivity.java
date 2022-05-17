@@ -34,16 +34,14 @@ public class PreviousWorkoutActivity extends AppCompatActivity implements View.O
 
     private TextView prevWorkoutDate, prevWorkoutName;
     private Button btn_close, btn_share;
-
-    // recycler view
     private RecyclerView recyclerView;
     private ExerciseListAdapter adapter;
     private ShareActionProvider mySAP;
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -55,7 +53,6 @@ public class PreviousWorkoutActivity extends AppCompatActivity implements View.O
 
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = pref.edit();
-        Log.w("TODAY", pref.getString("today",""));
 
         prevWorkoutDate = findViewById(R.id.prevWorkoutDate);
         prevWorkoutName = findViewById(R.id.prevWorkoutName);
@@ -72,7 +69,6 @@ public class PreviousWorkoutActivity extends AppCompatActivity implements View.O
         // recycler view
         recyclerView = findViewById(R.id.prevWorkoutRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -29,23 +29,22 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView splitDisplay, programDisplay, nextWorkoutDisplay;
-    Button btn_start;
-    android.widget.CalendarView calendarHome;
-    BottomNavigationView bottomNav;
-
+    private TextView splitDisplay, programDisplay, nextWorkoutDisplay;
+    private Button btn_start;
+    private android.widget.CalendarView calendarHome;
+    private BottomNavigationView bottomNav;
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
-    DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
+    private DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     // get current date
-    String today = getToday();
+    private String today = DateHandler.getToday();
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -62,21 +61,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         splitDisplay = findViewById(R.id.userSplit);
         programDisplay = findViewById(R.id.userProgram);
         nextWorkoutDisplay = findViewById(R.id.userNextWorkout);
-
         btn_start = findViewById(R.id.btn_startWorkout);
         btn_start.setOnClickListener(this);
-
         calendarHome = findViewById(R.id.calendarView);
         calendarHome.setOnClickListener(this);
-
         bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.home);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                // set up navigation
-                switch(item.getItemId()) {
+                switch(item.getItemId()) {  // set up navigation
                     case R.id.home:
                         return true;
                     case R.id.progress:
@@ -117,16 +112,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 // format date
-                String dateSelection;
-                if (dayOfMonth < 10 && (month + 1) < 10) {
-                    dateSelection = "0" + dayOfMonth + "-0" + (month + 1) + "-" + year;
-                } else if (dayOfMonth < 10 && (month + 1) > 10) {
-                    dateSelection = "0" + dayOfMonth + "-" + (month + 1) + "-" + year;
-                } else if (dayOfMonth > 10 && (month + 1) < 10) {
-                    dateSelection = dayOfMonth + "-0" + (month + 1) + "-" + year;
-                } else {
-                    dateSelection = dayOfMonth + "-" + (month + 1) + "-" + year;
-                }
+                String dateSelection = DateHandler.formatDate(dayOfMonth + "-" + (month+1) + "-" + year);
+
                 workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -210,10 +197,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("NEXT", nextWorkoutName);
 
                 nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
-
-
             }
-
             @Override public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
@@ -230,33 +214,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_timer:
                 break;
         }
-
     }
-
-    public String getToday() {
-        Calendar c = Calendar.getInstance();
-        int dayNow = c.get(Calendar.DAY_OF_MONTH);
-        int monthNow = c.get(Calendar.MONTH)+1;
-        int yearNow = c.get(Calendar.YEAR);
-        String today;
-
-        // d < 10, m < 10 -> 0x-0x-yyyy
-        // d < 10, m > 10 -> 0x-mm-yyyy
-        // d > 10, m < 10 -> dd-0x-yyyy
-        // d > 10, m > 10 -> dd-mm-yyyy
-
-        if (dayNow < 10 && monthNow < 10) {
-            today = "0" + dayNow + "-0" + monthNow + "-" + yearNow;
-        } else if (dayNow < 10 && monthNow > 10) {
-            today = "0" + dayNow + "-" + monthNow + "-" + yearNow;
-        } else if (dayNow > 10 && monthNow < 10) {
-            today = dayNow + "-0" + monthNow + "-" + yearNow;
-        } else {
-            today = dayNow + "-" + monthNow + "-" + yearNow;
-        }
-
-        return today;
-    }
-
 
 }

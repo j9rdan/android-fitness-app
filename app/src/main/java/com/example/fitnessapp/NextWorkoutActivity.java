@@ -38,12 +38,7 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
-    // get current date
-//    Calendar c = Calendar.getInstance();
-//    int dayNow = c.get(Calendar.DAY_OF_MONTH);
-//    int monthNow = c.get(Calendar.MONTH)+1;
-//    int yearNow = c.get(Calendar.YEAR);
-    String today = getToday();
+    private String today = DateHandler.getToday();  // get current date
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -54,6 +49,7 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next_workout);
 
+        // set up shared prefs editor
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = pref.edit();
 
@@ -71,7 +67,7 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String date = pref.getString("selectedDate", "");
+                String date = pref.getString("selectedDate", ""); // retrieve stored date
 
                 // get children & store in array list
                 Iterable<DataSnapshot> storedWorkouts_i = snapshot.getChildren();
@@ -83,9 +79,7 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
                 // get day # for selected workout
                 int dayCount;
                 for (dayCount = 0; dayCount < storedWorkouts_al.size(); dayCount++) {
-                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) { dayCount++;
-                        break;
-                    }
+                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) { dayCount++; break; }
                 }
 
                 // format data
@@ -117,7 +111,6 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
                 adapter = new ExerciseListAdapter(formattedData, getApplicationContext());
                 recyclerView.setAdapter(adapter);
 
-
             }
             @Override public void onCancelled(@NonNull DatabaseError error) { }
         });
@@ -135,31 +128,6 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
                 // open alarm clock or set timer for current time +2mins
                 break;
         }
-    }
-
-    public String getToday() {
-        Calendar c = Calendar.getInstance();
-        int dayNow = c.get(Calendar.DAY_OF_MONTH);
-        int monthNow = c.get(Calendar.MONTH)+1;
-        int yearNow = c.get(Calendar.YEAR);
-        String today;
-
-        // d < 10, m < 10 -> 0x-0x-yyyy
-        // d < 10, m > 10 -> 0x-mm-yyyy
-        // d > 10, m < 10 -> dd-0x-yyyy
-        // d > 10, m > 10 -> dd-mm-yyyy
-
-        if (dayNow < 10 && monthNow < 10) {
-            today = "0" + dayNow + "-0" + monthNow + "-" + yearNow;
-        } else if (dayNow < 10 && monthNow > 10) {
-            today = "0" + dayNow + "-" + monthNow + "-" + yearNow;
-        } else if (dayNow > 10 && monthNow < 10) {
-            today = dayNow + "-0" + monthNow + "-" + yearNow;
-        } else {
-            today = dayNow + "-" + monthNow + "-" + yearNow;
-        }
-
-        return today;
     }
 
 

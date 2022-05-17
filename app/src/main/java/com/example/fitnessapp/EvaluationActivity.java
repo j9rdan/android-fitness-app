@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -35,26 +36,20 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
-    // get current date
-    Calendar c = Calendar.getInstance();
-    int dayNow = c.get(Calendar.DAY_OF_MONTH);
-    int monthNow = c.get(Calendar.MONTH)+1;
-    int yearNow = c.get(Calendar.YEAR);
-    String today = dayNow + "-" + monthNow + "-" + yearNow;
+    private String today = DateHandler.getToday();
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-
-//    String[] formattedData = {"a", "b", "c"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluation);
 
+        // initialise shared prefs editor
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = pref.edit();
 
@@ -62,7 +57,6 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         date = findViewById(R.id.date);
         workoutName = findViewById(R.id.workoutName);
         btn_done = findViewById(R.id.btn_done);
-//        btn_done.setOnClickListener(this);
         recyclerView = findViewById(R.id.workoutRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -82,7 +76,6 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                     storedWorkouts_al.add(d);
                 }
 
-
                 // format data
                 String[] workoutData = snapshot.child(date).getValue().toString().split(";");
                 Log.w("READ", Arrays.toString(workoutData));
@@ -98,59 +91,50 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                 adapter = new RatingListAdapter(formattedData, getApplicationContext());
                 recyclerView.setAdapter(adapter);
 
-                // adjust volume
+                // adjust workout volume & update db
                 btn_done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        adjustVolume(workoutData, getRatings());
+                        String[] results = adjustVolume(workoutData);
+                        updateDatabase(results);
+                        startActivity(new Intent(EvaluationActivity.this, HomeActivity.class));
                     }
                 });
 
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            @Override public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 
     @Override
     public void onClick(View view) {
 
-//        if (view.getId() == R.id.btn_done) {
-//            Log.w("RATINGS", getRatings().toString());
-////            adjustVolume(getRatings());
-//
-//        }
-
     }
 
     public ArrayList<String> getRatings() {
 
         ArrayList<String> ratings = new ArrayList<>();
-
         int childCount = recyclerView.getChildCount();
         RatingListAdapter.RatingViewHolder childHolder;
+
         for (int i = 0; i < childCount; i++) {
             if (recyclerView.findViewHolderForLayoutPosition(i) instanceof RatingListAdapter.RatingViewHolder) {
                 childHolder = (RatingListAdapter.RatingViewHolder) recyclerView.findViewHolderForLayoutPosition(i);
                 if (childHolder.rating.getText().toString().isEmpty()) {
-                    ratings.add(String.valueOf(0));
+                    ratings.add(String.valueOf(0)); // default value
                 } else {
                     ratings.add(childHolder.rating.getText().toString());
                 }
-
-                Log.w("EDITTEXT", childHolder.rating.getText().toString());
             }
         }
         return ratings;
     }
 
-    public void adjustVolume(String[] workout, ArrayList<String> ratings_str) {
+    public String[] adjustVolume(String[] workout) {
 
         // get ratings
-        ratings_str = getRatings();
+        ArrayList<String> ratings_str = getRatings();
 
         // numeric arrays for ratings & associated multipliers
         double[] ratings = new double[ratings_str.size()];
@@ -169,27 +153,30 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
 
             multipliers[i] = mult;  // add to multipliers list
         }
-        String completeToday = "";
-        String nextWorkout = "";
+        String completeToday = "";  // to overwrite current db child with ratings included
+        String nextWorkout = "";    // create a new workout for same day next week
 
         for (int i = 0; i < workout.length-1; i++) {
             String[] exercise = workout[i].split(",");
-//            Log.w("EXERCISE", Arrays.toString(exercise));
-//            Log.w("EXERCISE[i]", exercise[0]);
             double weight = Double.parseDouble(exercise[1]) * multipliers[i];
             double newWeight = 2.5 * (Math.round(weight/2.5)); // rounds to the nearest 2.5kg
-            Log.w("NEW_WEIGHT", String.valueOf(newWeight));
             completeToday += exercise[0] + "," + exercise[1] + "," + ratings[i] + ";";
             nextWorkout += exercise[0] + "," + String.valueOf(newWeight) + ";";
-
         }
         completeToday += workoutName.getText().toString().toLowerCase().substring(0,4);
         nextWorkout += workoutName.getText().toString().toLowerCase().substring(0,4);
 
         Log.w("LOGGED", completeToday);
         Log.w("NEXT WEEK", nextWorkout);
-//        Log.w("RATINGS", Arrays.toString(ratings));
-//        Log.w("MULTS", Arrays.toString(multipliers));
+        Log.w("TODAY", today);
+
+        return new String[]{completeToday, nextWorkout};  // save result strings
+
+    }
+
+    public void updateDatabase(String[] newChildren) {
+        String completeToday = newChildren[0];
+        String nextWorkout = newChildren[1];
 
 
     }
