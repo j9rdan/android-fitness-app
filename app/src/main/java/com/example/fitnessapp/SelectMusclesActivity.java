@@ -79,7 +79,9 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
             }
 
             // save targeted muscles to current user
-            ref.child("target_muscles").setValue(targetedMuscles);
+//            ref.child("target_muscles").setValue(targetedMuscles);
+            ref.child("target_muscles").setValue(targetedMuscles.get(0));
+
 
             // switch activity
             startActivity(new Intent(this, ChooseSplitActivity.class));

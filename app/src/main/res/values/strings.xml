@@ -12,4 +12,13 @@
     <string name="timer">Timer</string>
     <string name="done">Done</string>
     <string name="rate_difficulty">Rate the difficulty of each exercise\n(1 = too easy, 10 = maximum effort)</string>
+    <string name="select_a_muscle_group">Select a muscle group</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="would_you_like_to_target_a_muscle">Would you like to target a muscle?</string>
+    <string name="create_a_general_workout_program">Create a general workout program</string>
+    <string name="i_have_a_weak_area_i_want_to_focus_on">I have a weak area I want to focus on</string>
+    <string name="next">Next</string>
+    <string name="tell_us_about_you">Tell us about you</string>
+    <string name="male">Male</string>
 </resources>

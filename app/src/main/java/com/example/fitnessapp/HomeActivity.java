@@ -151,7 +151,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         userRef.child("split").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String split = snapshot.getValue(String.class) + "-day split";
+                String split = "";
+                if (!snapshot.getValue(String.class).equals(""))
+                    split = snapshot.getValue(String.class) + "-day split";
                 splitDisplay.setText(split);
             }
             @Override
@@ -164,8 +166,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         userRef.child("program_type").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String programType = snapshot.getValue(String.class).toUpperCase();
+                String programType = "";
+                if (!snapshot.getValue(String.class).equals(""))
+                    programType = snapshot.getValue(String.class).toUpperCase();
                 programDisplay.setText(programType);
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -174,7 +179,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // get next workout
-        // TODO: add check if there is a next workout
         workoutsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -190,13 +194,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 for (i = 0; i < storedWorkouts_al.size(); i++) {
                     if (storedWorkouts_al.get(i).getKey().equals(today)) break;
                 }
-                String[] nextWorkout = storedWorkouts_al.get(i+1).getValue().toString().split(";");
-                String nextWorkoutName = nextWorkout[nextWorkout.length-1];
 
-                Log.i("CHILDREN", storedWorkouts_al.toString());
-                Log.i("NEXT", nextWorkoutName);
+                Log.w("LAST WORKOUT", storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey());
 
-                nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
+
+                if (storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey().compareTo(today) > 0) {
+                    // if there is an upcoming workout
+                    String[] nextWorkout = storedWorkouts_al.get(i+1).getValue().toString().split(";");
+                    String nextWorkoutName = nextWorkout[nextWorkout.length-1];
+                    Log.i("CHILDREN", storedWorkouts_al.toString());
+                    Log.i("NEXT", nextWorkoutName);
+                    nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
+                } else {
+                    nextWorkoutDisplay.setText("NOTHING");
+                }
+
             }
             @Override public void onCancelled(@NonNull DatabaseError error) { }
         });

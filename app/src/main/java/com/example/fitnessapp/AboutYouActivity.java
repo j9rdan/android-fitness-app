@@ -1,5 +1,6 @@
 package com.example.fitnessapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,8 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AboutYouActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -77,7 +81,20 @@ public class AboutYouActivity extends AppCompatActivity implements View.OnClickL
             ref.child("height").setValue(height_str);
             ref.child("weight").setValue(weight_str);
 
-            startActivity(new Intent(this, TargetMusclesActivity.class));
+//            startActivity(new Intent(this, TargetMusclesActivity.class));
+
+            ref.child("program_type").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.getValue(String.class).equals("Hypertrophy")) {
+                        // only users who want to build muscle can target a muscle group
+                        startActivity(new Intent(AboutYouActivity.this, TargetMusclesActivity.class));
+                    } else {
+                        startActivity(new Intent(AboutYouActivity.this, ChooseSplitActivity.class));
+                    }
+                }
+                @Override public void onCancelled(@NonNull DatabaseError error) { }
+            });
         }
 
     }
