@@ -21,4 +21,7 @@
     <string name="next">Next</string>
     <string name="tell_us_about_you">Tell us about you</string>
     <string name="male">Male</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="my_profile">My profile</string>
+    <string name="log_out">Log out</string>
 </resources>

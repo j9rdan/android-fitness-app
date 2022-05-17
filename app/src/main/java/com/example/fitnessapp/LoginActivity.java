@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,12 +35,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance(); // get firebase authentication instance
+
+        // initialise shared prefs editor
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = pref.edit();
 
         // initialise all activity components
         username_et = findViewById(R.id.username_login_input);
@@ -56,22 +65,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.loginBtn:
                 signUserIn();
                 username_et.setText("");
                 password_et.setText("");
                 break;
-            case R.id.forgotPWOption:
-                resetPassword();
-                break;
+
             case R.id.regOption:
                 startActivity(new Intent(this, SignupActivity.class));
         }
-    }
-
-    private void resetPassword() {
-
     }
 
     private void signUserIn() {
@@ -107,23 +111,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         email = ds.child("email").getValue(String.class);
                     }
 
-                    assert email != null;
-
-                    // sign in with given credentials
-                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                progressBar.setVisibility(View.GONE);
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(LoginActivity.this, "Wrong credentials. Please try again", Toast.LENGTH_LONG).show();
+                    if (email != null) { // if user exists
+                        // sign in with given credentials
+                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    editor.putString("currentUsername", username);
+                                    editor.apply();
+                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                    progressBar.setVisibility(View.GONE);
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(LoginActivity.this, "Wrong credentials. Please try again", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
-                } else {
-                    Log.i("TAG", task.getException().getMessage());
+                        });
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(LoginActivity.this, "User not found. Register an account", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                    }
+
                 }
             }
         });

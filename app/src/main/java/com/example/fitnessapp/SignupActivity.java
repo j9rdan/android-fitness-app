@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -29,6 +31,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseAuth mAuth;
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         // get an instance of firebase authentication
         mAuth = FirebaseAuth.getInstance();
+
+        // initialise shared prefs editor
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = pref.edit();
 
         // initialise all activity components
         regBtn = findViewById(R.id.button);
@@ -125,8 +134,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful())
+                                                if (task.isSuccessful()) {
+                                                    editor.putString("currentUsername", username);
+                                                    editor.apply();
                                                     startActivity(new Intent(SignupActivity.this, SelectProgramActivity.class));
+                                                }
                                             }
                                         });
 

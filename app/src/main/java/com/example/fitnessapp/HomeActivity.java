@@ -37,8 +37,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
-    private DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
+    private DatabaseReference userRef;
+    private DatabaseReference workoutsRef;
 
     // get current date
     private String today = DateHandler.getToday();
@@ -51,6 +51,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // check if user is logged in
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+        } else {
+            userRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
+            workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
+            getProgramData();
+        }
 
         // define shared preferences
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -91,22 +100,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // check if current user has completed sign up flow:
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.hasChild("program_type"))
-                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-            }
-            @Override public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
-        // check if user is logged in
-        if (mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-        } else {
-            getProgramData();
-        }
+//        // check if current user has completed sign up flow:
+//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (!snapshot.hasChild("program_type"))
+//                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+//            }
+//            @Override public void onCancelled(@NonNull DatabaseError error) { }
+//        });
 
         calendarHome.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -147,71 +149,84 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProgramData() {
 
-        // get user program split & update UI
-        userRef.child("split").addValueEventListener(new ValueEventListener() {
+        // check if current user has completed sign up flow:
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String split = "";
-                if (!snapshot.getValue(String.class).equals(""))
-                    split = snapshot.getValue(String.class) + "-day split";
-                splitDisplay.setText(split);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("firebase", error.getMessage());
-            }
-        });
-
-        // get user training program type & update UI
-        userRef.child("program_type").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String programType = "";
-                if (!snapshot.getValue(String.class).equals(""))
-                    programType = snapshot.getValue(String.class).toUpperCase();
-                programDisplay.setText(programType);
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("firebase", error.getMessage());
-            }
-        });
-
-        // get next workout
-        workoutsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                // get children & store in array list
-                Iterable<DataSnapshot> storedWorkouts_i = snapshot.getChildren();
-                List<DataSnapshot> storedWorkouts_al = new ArrayList<>();
-                for (DataSnapshot d : storedWorkouts_i) {
-                    storedWorkouts_al.add(d);
-                }
-                // get position of next workout & day # for selected workout
-                int i;
-                for (i = 0; i < storedWorkouts_al.size(); i++) {
-                    if (storedWorkouts_al.get(i).getKey().equals(today)) break;
-                }
-
-                Log.w("LAST WORKOUT", storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey());
-
-
-                if (storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey().compareTo(today) > 0) {
-                    // if there is an upcoming workout
-                    String[] nextWorkout = storedWorkouts_al.get(i+1).getValue().toString().split(";");
-                    String nextWorkoutName = nextWorkout[nextWorkout.length-1];
-                    Log.i("CHILDREN", storedWorkouts_al.toString());
-                    Log.i("NEXT", nextWorkoutName);
-                    nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
+                if (!snapshot.hasChild("program_type")) {
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                 } else {
-                    nextWorkoutDisplay.setText("NOTHING");
-                }
+                    // get user program split & update UI
+                    userRef.child("split").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String split = "";
+                            if (!snapshot.getValue(String.class).equals(""))
+                                split = snapshot.getValue(String.class) + "-day split";
+                            splitDisplay.setText(split);
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.d("firebase", error.getMessage());
+                        }
+                    });
 
+                    // get user training program type & update UI
+                    userRef.child("program_type").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String programType = "";
+                            if (!snapshot.getValue(String.class).equals(""))
+                                programType = snapshot.getValue(String.class).toUpperCase();
+                            programDisplay.setText(programType);
+
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.d("firebase", error.getMessage());
+                        }
+                    });
+
+                    // get next workout
+                    workoutsRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            // get children & store in array list
+                            Iterable<DataSnapshot> storedWorkouts_i = snapshot.getChildren();
+                            List<DataSnapshot> storedWorkouts_al = new ArrayList<>();
+                            for (DataSnapshot d : storedWorkouts_i) {
+                                storedWorkouts_al.add(d);
+                            }
+                            // get position of next workout & day # for selected workout
+                            int i;
+                            for (i = 0; i < storedWorkouts_al.size(); i++) {
+                                if (storedWorkouts_al.get(i).getKey().equals(today)) break;
+                            }
+
+                            Log.w("LAST WORKOUT", storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey());
+
+
+                            if (storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey().compareTo(today) > 0) {
+                                // if there is an upcoming workout
+                                String[] nextWorkout = storedWorkouts_al.get(i+1).getValue().toString().split(";");
+                                String nextWorkoutName = nextWorkout[nextWorkout.length-1];
+                                Log.i("CHILDREN", storedWorkouts_al.toString());
+                                Log.i("NEXT", nextWorkoutName);
+                                nextWorkoutDisplay.setText(nextWorkoutName.toUpperCase());
+                            } else {
+                                nextWorkoutDisplay.setText("NOTHING");
+                            }
+
+                        }
+                        @Override public void onCancelled(@NonNull DatabaseError error) { }
+                    });
+                }
             }
             @Override public void onCancelled(@NonNull DatabaseError error) { }
         });
+
+
     }
 
     @Override
@@ -228,4 +243,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }
