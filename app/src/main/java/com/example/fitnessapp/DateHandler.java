@@ -6,18 +6,18 @@ public class DateHandler {
 
     public static String formatDate(String date) {
 
-        int dd = Integer.parseInt(date.split("-")[0]);
+        int dd = Integer.parseInt(date.split("-")[2]);
         int mm = Integer.parseInt(date.split("-")[1]);
-        int yyyy = Integer.parseInt(date.split("-")[2]);
+        int yyyy = Integer.parseInt(date.split("-")[0]);
 
         if (dd < 10 && mm < 10) {
-            date = "0" + dd + "-0" + mm + "-" + yyyy;
+            date = yyyy + "-0" + mm + "-0" + dd;
         } else if (dd < 10 && mm > 10) {
-            date = "0" + dd + "-" + mm + "-" + yyyy;
-        } else if (dd > 10 && mm < 10) {
-            date = dd + "-0" + mm + "-" + yyyy;
+            date = yyyy + "-" + mm + "-0" + dd;
+        } else if (dd >= 10 && mm < 10) {
+            date = yyyy + "-0" + mm + "-" + dd;
         } else {
-            date = dd + "-" + mm + "-" + yyyy;
+            date = yyyy + "-" + mm + "-" + dd;
         }
         return date;
     }
@@ -27,12 +27,18 @@ public class DateHandler {
         int dayNow = c.get(Calendar.DAY_OF_MONTH);
         int monthNow = c.get(Calendar.MONTH)+1;
         int yearNow = c.get(Calendar.YEAR);
-        String today = dayNow + "-" + monthNow + "-" + yearNow;
+        String today = yearNow + "-" + monthNow + "-" + dayNow;
 
         return DateHandler.formatDate(today);
     }
 
     public static String get7DaysFromNow() {
-        return "";
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, 20);
+        int dd = c.get(Calendar.DAY_OF_MONTH);
+        int mm = c.get(Calendar.MONTH)+1;
+        int yyyy = c.get(Calendar.YEAR);
+        String date = yyyy + "-" + mm + "-" + dd;
+        return DateHandler.formatDate(date);
     }
 }

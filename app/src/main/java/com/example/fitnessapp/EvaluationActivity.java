@@ -161,7 +161,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
             double weight = Double.parseDouble(exercise[1]) * multipliers[i];
             double newWeight = 2.5 * (Math.round(weight/2.5)); // rounds to the nearest 2.5kg
             completeToday += exercise[0] + "," + exercise[1] + "," + ratings[i] + ";";
-            nextWorkout += exercise[0] + "," + String.valueOf(newWeight) + ";";
+            nextWorkout += exercise[0] + "," + newWeight + ";";
         }
         completeToday += workoutName.getText().toString().toLowerCase().substring(0,4);
         nextWorkout += workoutName.getText().toString().toLowerCase().substring(0,4);
@@ -178,6 +178,8 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         String completeToday = newChildren[0];
         String nextWorkout = newChildren[1];
 
+        workoutsRef.child(today).setValue(completeToday);
+        workoutsRef.child(DateHandler.get7DaysFromNow()).setValue(nextWorkout);
 
     }
 }

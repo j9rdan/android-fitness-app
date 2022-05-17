@@ -112,7 +112,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
                 // format date
-                String dateSelection = DateHandler.formatDate(dayOfMonth + "-" + (month+1) + "-" + year);
+                String dateSelection = DateHandler.formatDate(year + "-" + (month+1) + "-" + dayOfMonth);
 
                 workoutsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
