@@ -3,12 +3,17 @@ package com.example.fitnessapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,7 +29,7 @@ import java.util.ArrayList;
 
 public class ChooseSplitActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btn_3days, btn_4days, btn_5days, btn_6days;
+    private Button btn_3days, btn_4days, btn_5days, btn_6days;
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -79,7 +84,6 @@ public class ChooseSplitActivity extends AppCompatActivity implements View.OnCli
         }
 
         getProgram();
-//        startActivity(new Intent(this, HomeActivity.class));
     }
 
     private void getProgram() {
@@ -106,25 +110,34 @@ public class ChooseSplitActivity extends AppCompatActivity implements View.OnCli
                     for (DataSnapshot d : task.getResult().getChildren()) {
                         programDays.add(d.getValue((String.class)));
                     }
-//                    Log.w("LIST", programDays.toString());
-//                    String legDay = programDays.get(0);
-//                    String pullDay = programDays.get(1);
-//                    String pushDay = programDays.get(2);
 
                     ArrayList<String> dates = DateHandler.generateDates(Integer.parseInt(split));
                     Log.w("DATES", dates.toString());
 
-//                    int i = 2;  // 2 = push day, 1 = pull day, 0 = legs
-//                    for (String date : dates) {
-//                        workoutsRef.child(date).setValue(programDays.get(i));
-//                        i--;
-//                        if (i < 0) i = 2;
-//                    }
+                    int i = 2;  // 2 = push day, 1 = pull day, 0 = legs
+                    for (String date : dates) {
+                        workoutsRef.child(date).setValue(programDays.get(i));
+                        Toast.makeText(ChooseSplitActivity.this, "Upcoming workouts:\n" + date, Toast.LENGTH_SHORT).show();
+                        i--;
+                        if (i < 0) i = 2;
+                    }
+                    workoutsRef.child(DateHandler.getFutureDate(-1)).setValue("N/A,0,none ;program creation");
+                    load();
                 }
             }
         });
 
 
 
+    }
+
+    public void load() {
+        startActivity(new Intent(ChooseSplitActivity.this, LoadingActivity.class));
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(ChooseSplitActivity.this, HomeActivity.class));
+            }
+        }, 2000);
     }
 }

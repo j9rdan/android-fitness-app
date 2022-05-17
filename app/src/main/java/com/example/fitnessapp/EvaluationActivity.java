@@ -189,15 +189,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String futureDate;
-                int step = 0;
-                int split = Integer.parseInt(snapshot.getValue().toString());
-                switch (split) {    // use user's split to determine when next workout should be
-                    case 3: step = 7;break;
-                    case 4: step = 4;break;
-                    case 5: step = 3;break;
-                    case 6: step = 2;break;
-                }
-                futureDate = DateHandler.getFutureDate(step);
+                futureDate = DateHandler.getFutureDate(7);
                 Log.w("FUTUREDATE", futureDate);
                 workoutsRef.child(futureDate).setValue(nextWorkout);
                 Toast.makeText(EvaluationActivity.this, futureDate + ": Workout created", Toast.LENGTH_SHORT).show();

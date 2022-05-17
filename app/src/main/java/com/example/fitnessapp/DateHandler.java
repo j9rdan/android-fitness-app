@@ -46,7 +46,7 @@ public class DateHandler {
     public static ArrayList<String> generateDates(int split) {
         ArrayList<String> dates = new ArrayList<>();
         for (int i = 0; i < split; i++) {
-            dates.add(DateHandler.getFutureDate(i+1));
+            dates.add(DateHandler.getFutureDate(i));
         }
         return dates;
     }

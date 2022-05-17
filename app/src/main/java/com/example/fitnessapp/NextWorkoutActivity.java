@@ -97,10 +97,10 @@ public class NextWorkoutActivity extends AppCompatActivity implements View.OnCli
 
                 // set displays
                 if (date.equals(today)) {
-                    nextDate.setText("TODAY | Day " + dayCount);
+                    nextDate.setText("TODAY | Day " + (dayCount-1));
                     editor.putString("thisWorkoutDate", nextDate.getText().toString());
                 } else {
-                    nextDate.setText(date + " | Day " + dayCount);
+                    nextDate.setText(date + " | Day " + (dayCount-1));
                     btn_complete.setVisibility(View.INVISIBLE); // hide action buttons for future dates
                     btn_timer.setVisibility(View.INVISIBLE);
                 }

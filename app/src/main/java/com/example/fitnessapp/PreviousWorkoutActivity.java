@@ -104,7 +104,7 @@ public class PreviousWorkoutActivity extends AppCompatActivity implements View.O
                 Log.w("FORMAT", Arrays.toString(formattedData));
 
                 // set displays
-                prevWorkoutDate.setText(date + " | Day " + dayCount);
+                prevWorkoutDate.setText(date + " | Day " + (dayCount-1));
                 prevWorkoutName.setText(workoutData[workoutData.length-1].toUpperCase() + " DAY");
                 adapter = new ExerciseListAdapter(formattedData, getApplicationContext());
                 recyclerView.setAdapter(adapter);

@@ -100,15 +100,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        // check if current user has completed sign up flow:
-//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (!snapshot.hasChild("program_type"))
-//                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-//            }
-//            @Override public void onCancelled(@NonNull DatabaseError error) { }
-//        });
 
         calendarHome.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -205,8 +196,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             Log.w("LAST WORKOUT", storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey());
-
-
+                            
                             if (storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey().compareTo(today) > 0) {
                                 // if there is an upcoming workout
                                 String[] nextWorkout = storedWorkouts_al.get(i+1).getValue().toString().split(";");
@@ -243,8 +233,4 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 }

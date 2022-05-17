@@ -6,20 +6,21 @@
         <entry key="app/src/main/res/drawable/selector.xml" value="0.4015" />
         <entry key="app/src/main/res/layout/activity_about_you.xml" value="0.30711771647135416" />
         <entry key="app/src/main/res/layout/activity_analytics.xml" value="0.28072916666666664" />
-        <entry key="app/src/main/res/layout/activity_choose_split.xml" value="0.37966512044270834" />
+        <entry key="app/src/main/res/layout/activity_choose_split.xml" value="0.3299992879231771" />
         <entry key="app/src/main/res/layout/activity_evaluation.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.2691786812318136" />
+        <entry key="app/src/main/res/layout/activity_loading.xml" value="0.234375" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22200439010841264" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.44848327636718754" />
         <entry key="app/src/main/res/layout/activity_more_info.xml" value="0.28072916666666664" />
-        <entry key="app/src/main/res/layout/activity_next_workout.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/layout/activity_next_workout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_previous_workout.xml" value="0.3837329145790873" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.28072916666666664" />
         <entry key="app/src/main/res/layout/activity_select_muscles.xml" value="0.3221450805664063" />
         <entry key="app/src/main/res/layout/activity_select_program.xml" value="0.2343556722005208" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.31287994384765627" />
         <entry key="app/src/main/res/layout/activity_target_muscles.xml" value="0.23645833333333333" />
-        <entry key="app/src/main/res/layout/activity_today_workout.xml" value="0.36730072463768115" />
+        <entry key="app/src/main/res/layout/activity_today_workout.xml" value="0.23045043945312502" />
         <entry key="app/src/main/res/layout/activity_user_login.xml" value="0.39421844482421875" />
         <entry key="app/src/main/res/layout/checkbox_rows.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/previous_workout.xml" value="0.2688586470009624" />
