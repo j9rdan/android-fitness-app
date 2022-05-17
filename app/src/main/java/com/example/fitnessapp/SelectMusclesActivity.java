@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +34,7 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
 //                                            "Legs: glutes", "Legs: hamstrings", "Legs: calves", "Core"};
 
     final String[] allMuscles = {"Chest", "Shoulders", "Triceps", "Back", "Biceps", "Legs"};
-    List<String> targetedMuscles;   // user-selected muscles
+    private List<String> targetedMuscles;   // user-selected muscles
 
     // declare views
     private Button btn_next;
@@ -43,13 +45,20 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
+    private DatabaseReference ref = database.getReference("Users").child(mAuth.getCurrentUser().getUid());
+
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_muscles);
+
+        // define shared preferences
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = pref.edit();
 
         // get views
         recyclerView = findViewById(R.id.musclesRecycler);
@@ -74,13 +83,15 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
 
             // selection validation
             if (targetedMuscles.size() != 1) {
-                Toast.makeText(SelectMusclesActivity.this, "Choose a muscle to target", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectMusclesActivity.this, "Choose 1 muscle", Toast.LENGTH_LONG).show();
                 return;
             }
 
             // save targeted muscles to current user
 //            ref.child("target_muscles").setValue(targetedMuscles);
             ref.child("target_muscles").setValue(targetedMuscles.get(0));
+            editor.putString("targetedMuscle", targetedMuscles.get(0));
+            editor.apply();
 
 
             // switch activity

@@ -1,5 +1,6 @@
 package com.example.fitnessapp;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DateHandler {
@@ -40,5 +41,13 @@ public class DateHandler {
         int yyyy = c.get(Calendar.YEAR);
         String date = yyyy + "-" + mm + "-" + dd;
         return DateHandler.formatDate(date);
+    }
+
+    public static ArrayList<String> generateDates(int split) {
+        ArrayList<String> dates = new ArrayList<>();
+        for (int i = 0; i < split; i++) {
+            dates.add(DateHandler.getFutureDate(i+1));
+        }
+        return dates;
     }
 }
