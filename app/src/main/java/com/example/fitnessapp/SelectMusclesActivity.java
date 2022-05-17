@@ -73,8 +73,8 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
             targetedMuscles = adapter.getSelectedValues(); // get chosen muscles
 
             // selection validation
-            if (targetedMuscles.size() < 1 || targetedMuscles.size() > 3) {
-                Toast.makeText(SelectMusclesActivity.this, "Choose up to 3 muscles to target", Toast.LENGTH_LONG).show();
+            if (targetedMuscles.size() != 1) {
+                Toast.makeText(SelectMusclesActivity.this, "Choose a muscle to target", Toast.LENGTH_LONG).show();
                 return;
             }
 

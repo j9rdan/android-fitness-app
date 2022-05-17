@@ -191,7 +191,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                 String futureDate;
                 int step = 0;
                 int split = Integer.parseInt(snapshot.getValue().toString());
-                switch (split) {
+                switch (split) {    // use user's split to determine when next workout should be
                     case 3: step = 7;break;
                     case 4: step = 4;break;
                     case 5: step = 3;break;
