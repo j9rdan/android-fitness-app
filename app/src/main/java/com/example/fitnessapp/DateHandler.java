@@ -34,7 +34,7 @@ public class DateHandler {
 
     public static String get7DaysFromNow() {
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, 20);
+        c.add(Calendar.DAY_OF_MONTH, 7);
         int dd = c.get(Calendar.DAY_OF_MONTH);
         int mm = c.get(Calendar.MONTH)+1;
         int yyyy = c.get(Calendar.YEAR);
