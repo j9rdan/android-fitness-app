@@ -8,13 +8,13 @@
         android:icon="@drawable/ic_home"/>
 
     <item
-        android:id="@+id/progress"
-        android:title="Progress"
-        android:icon="@drawable/ic_progress"/>
+        android:id="@+id/insights"
+        android:title="Insights"
+        android:icon="@drawable/ic_insights"/>
 
     <item
-        android:id="@+id/info"
-        android:title="Info"
+        android:id="@+id/help"
+        android:title="Help"
         android:icon="@drawable/ic_info"/>
 
     <item

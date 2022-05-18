@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -59,12 +58,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.progress:
+                    case R.id.insights:
                         startActivity(new Intent(getApplicationContext(), AnalyticsActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.info:
-                        startActivity(new Intent(getApplicationContext(), MoreInfoActivity.class));
+                    case R.id.help:
+                        startActivity(new Intent(getApplicationContext(), WebViewActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.profile:

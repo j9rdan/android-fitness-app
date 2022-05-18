@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -83,12 +82,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 switch(item.getItemId()) {  // set up navigation
                     case R.id.home:
                         return true;
-                    case R.id.progress:
+                    case R.id.insights:
                         startActivity(new Intent(getApplicationContext(), AnalyticsActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.info:
-                        startActivity(new Intent(getApplicationContext(), MoreInfoActivity.class));
+                    case R.id.help:
+                        startActivity(new Intent(getApplicationContext(), WebViewActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.profile:

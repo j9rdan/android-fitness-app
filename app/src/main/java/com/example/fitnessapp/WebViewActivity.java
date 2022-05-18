@@ -9,17 +9,17 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MoreInfoActivity extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_more_info);
+        setContentView(R.layout.activity_webview);
 
         bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.info);
+        bottomNav.setSelectedItemId(R.id.help);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -30,11 +30,11 @@ public class MoreInfoActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.progress:
+                    case R.id.insights:
                         startActivity(new Intent(getApplicationContext(), AnalyticsActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.info:
+                    case R.id.help:
                         return true;
                     case R.id.profile:
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));

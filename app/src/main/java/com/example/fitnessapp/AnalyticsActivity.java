@@ -4,17 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -85,7 +78,7 @@ public class AnalyticsActivity extends AppCompatActivity {
         });
 
         bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.progress);
+        bottomNav.setSelectedItemId(R.id.insights);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -96,10 +89,10 @@ public class AnalyticsActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.progress:
+                    case R.id.insights:
                         return true;
-                    case R.id.info:
-                        startActivity(new Intent(getApplicationContext(), MoreInfoActivity.class));
+                    case R.id.help:
+                        startActivity(new Intent(getApplicationContext(), WebViewActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.profile:

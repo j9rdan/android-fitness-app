@@ -31,7 +31,7 @@
             android:name=".AnalyticsActivity"
             android:exported="false" />
         <activity
-            android:name=".MoreInfoActivity"
+            android:name=".WebViewActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
