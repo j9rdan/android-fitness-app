@@ -41,6 +41,7 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference workoutsRef = database.getReference("Workouts").child(mAuth.getCurrentUser().getUid());
 
     private String today = DateHandler.getToday();
+    private int workoutCount = 0;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -77,6 +78,12 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                     storedWorkouts_al.add(d);
                 }
 
+                // get day # for selected workout
+                int dayCount;
+                for (dayCount = 0; dayCount < storedWorkouts_al.size(); dayCount++) {
+                    if (storedWorkouts_al.get(dayCount).getKey().equals(date)) { dayCount++; break; }
+                }
+
                 // format data
                 String[] workoutData = snapshot.child(date).getValue().toString().split(";");
                 Log.w("READ", Arrays.toString(workoutData));
@@ -98,6 +105,19 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                     public void onClick(View view) {
                         String[] results = adjustVolume(workoutData);
                         updateDatabase(results);
+                        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.hasChild("total_workouts")) {
+                                    // store workout count
+                                    int count = snapshot.child("total_workouts").getValue(Integer.class) + 1;
+                                    userRef.child("total_workouts").setValue(count);
+                                } else {
+                                    userRef.child("total_workouts").setValue(1);
+                                }
+                            }
+                            @Override public void onCancelled(@NonNull DatabaseError error) { }
+                        });
                         startActivity(new Intent(EvaluationActivity.this, HomeActivity.class));
                     }
                 });
@@ -130,6 +150,15 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
             }
         }
         return ratings;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        editor.remove("startDate");
+        editor.remove("recordedWorkouts");
+        editor.apply();
+
     }
 
     public String[] adjustVolume(String[] workout) {

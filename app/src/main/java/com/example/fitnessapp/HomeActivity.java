@@ -194,9 +194,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             for (i = 0; i < storedWorkouts_al.size(); i++) {
                                 if (storedWorkouts_al.get(i).getKey().equals(today)) break;
                             }
+                            String startDate = storedWorkouts_al.get(0).getKey();
+//                            editor.putString("startDate", startDate);
+//                            editor.apply();
 
                             Log.w("LAST WORKOUT", storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey());
-                            
+
                             if (storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey().compareTo(today) > 0) {
                                 // if there is an upcoming workout
                                 String[] nextWorkout = storedWorkouts_al.get(i+1).getValue().toString().split(";");

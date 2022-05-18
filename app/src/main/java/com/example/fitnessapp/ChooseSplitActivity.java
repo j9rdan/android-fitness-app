@@ -122,6 +122,7 @@ public class ChooseSplitActivity extends AppCompatActivity implements View.OnCli
                         if (i < 0) i = 2;
                     }
                     workoutsRef.child(DateHandler.getFutureDate(-1)).setValue("N/A,0,none ;program creation");
+                    userRef.child("total_workouts").setValue(0);
                     load();
                 }
             }

@@ -56,6 +56,9 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_muscles);
 
+        editor.remove("targetedMuscle");
+        editor.apply();
+
         // define shared preferences
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = pref.edit();
@@ -90,8 +93,8 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
             // save targeted muscles to current user
 //            ref.child("target_muscles").setValue(targetedMuscles);
             ref.child("target_muscles").setValue(targetedMuscles.get(0));
-            editor.putString("targetedMuscle", targetedMuscles.get(0));
-            editor.apply();
+//            editor.putString("targetedMuscle", targetedMuscles.get(0));
+//            editor.apply();
 
 
             // switch activity
