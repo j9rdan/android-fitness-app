@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="my_btn">#3D5249</color>
+    <color name="my_cards">#A4C3B2</color>
+    <color name="my_secondary">#CCE3DE</color>
+    <color name="my_fields">#EAF4F4</color>
+    <color name="my_bg">#F6FFF8</color>
+
+
 </resources>

@@ -50,13 +50,10 @@ public class SelectProgramActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.btn_muscle:
-                // set user program type to hypertrophy
-//                ref.child("program_type").setValue("Hypertrophy");
-                chosenProgram = "Hypertrophy";
+                chosenProgram = "Hypertrophy";  // set user program type to hypertrophy (muscle growth)
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));
                 break;
             case R.id.btn_strength:
-//                ref.child("program_type").setValue("Strength");
                 chosenProgram = "Strength";
                 editor.putString("targetedMuscle", "General");
                 startActivity(new Intent(SelectProgramActivity.this, AboutYouActivity.class));

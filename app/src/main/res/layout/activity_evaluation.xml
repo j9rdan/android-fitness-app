@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_bg"
     tools:context=".EvaluationActivity">
 
     <androidx.cardview.widget.CardView
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/purple_500"
+        app:cardBackgroundColor="@color/my_cards"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
         app:layout_columnWeight="1"
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -46,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -74,7 +75,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="40dp"
-        android:background="#F1EEEE"
+        android:background="@color/my_fields"
         app:layout_constraintBottom_toTopOf="@+id/btn_done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -85,6 +86,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="180dp"
+        android:backgroundTint="@color/my_btn"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

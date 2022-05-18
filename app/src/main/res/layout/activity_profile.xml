@@ -4,25 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_bg"
     tools:context=".ProfileActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemBackground="@color/my_btn"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemBackground="@color/purple_500"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@drawable/selector"
-        app:menu="@menu/menu_navigation"/>
+        app:menu="@menu/menu_navigation" />
 
     <Button
         android:id="@+id/btn_editProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:backgroundTint="@color/my_btn"
         android:fontFamily="@font/poppins_bold"
         android:text="@string/edit_profile"
         android:textAllCaps="false"
@@ -37,6 +39,7 @@
         android:id="@+id/btn_logOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/my_btn"
         android:fontFamily="@font/poppins_bold"
         android:text="@string/log_out"
         android:textAllCaps="false"
@@ -56,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
-        app:srcCompat="@drawable/ic_profile" />
+        app:srcCompat="@drawable/ic_welift_full" />
 
     <TextView
         android:id="@+id/textView16"
@@ -79,6 +82,7 @@
         android:fontFamily="@font/poppins_bold"
         android:text="@string/username"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/my_btn"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

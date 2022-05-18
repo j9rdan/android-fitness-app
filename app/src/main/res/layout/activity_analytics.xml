@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_bg"
     tools:context=".AnalyticsActivity">
 
 
@@ -42,7 +43,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="#EFEFEF"
+            app:cardBackgroundColor="@color/my_cards"
             app:cardCornerRadius="12dp"
             app:cardElevation="6dp"
             app:layout_columnWeight="1"
@@ -79,7 +80,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="#EFEFEF"
+            app:cardBackgroundColor="@color/my_cards"
             app:cardCornerRadius="12dp"
             app:cardElevation="6dp"
             app:layout_columnWeight="1"
@@ -115,7 +116,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#EFEFEF"
+            app:cardBackgroundColor="@color/my_cards"
             app:cardCornerRadius="12dp"
             app:cardElevation="6dp"
             app:layout_columnWeight="1"
@@ -155,12 +156,12 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemBackground="@color/my_btn"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemBackground="@color/purple_500"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@drawable/selector"
-        app:menu="@menu/menu_navigation"/>
+        app:menu="@menu/menu_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

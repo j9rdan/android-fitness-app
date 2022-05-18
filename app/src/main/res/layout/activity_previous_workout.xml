@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/my_bg">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/purple_500"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/my_cards"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
         app:layout_columnWeight="1"
@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.84000003"
         app:layout_rowWeight="1">
 
         <LinearLayout
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -60,33 +60,52 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="56dp"
-        android:background="#F1EEEE"
-        app:layout_constraintBottom_toTopOf="@+id/btn_closePrevWorkout"
+        android:layout_marginBottom="35dp"
+        android:background="@color/my_fields"
+        app:layout_constraintBottom_toTopOf="@+id/btn_complete_start2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_sharePrevWorkout"
+    <LinearLayout
+        android:id="@+id/btn_complete_start2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="92dp"
-        android:text="share"
+        android:layout_marginBottom="165dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prevWorkoutRecycler"
-        app:layout_constraintVertical_bias="0.237" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/btn_closePrevWorkout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
-        android:text="Close"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_sharePrevWorkout"
-        app:layout_constraintHorizontal_bias="0.733"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/btn_closePrevWorkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/my_btn"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/close"
+            android:textAllCaps="false"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.285" />
+
+        <Button
+            android:id="@+id/btn_sharePrevWorkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/my_btn"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/share"
+            android:textAllCaps="false"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.732"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

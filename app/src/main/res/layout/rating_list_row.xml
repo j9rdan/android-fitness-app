@@ -8,8 +8,11 @@
         android:id="@+id/rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
         android:inputType="numberDecimal"
-        android:padding="10dp" />
+        android:outlineProvider="none"
+        android:padding="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <View
         android:layout_width="match_parent"

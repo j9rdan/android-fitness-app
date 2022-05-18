@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_bg"
     tools:context=".SelectProgramActivity">
 
     <TextView
@@ -25,6 +26,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/my_btn"
         android:fontFamily="@font/poppins_bold"
         android:text="build muscle"
         android:textSize="18sp"
@@ -41,6 +43,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/my_btn"
         android:fontFamily="@font/poppins_bold"
         android:text="build strength"
         android:textAllCaps="true"

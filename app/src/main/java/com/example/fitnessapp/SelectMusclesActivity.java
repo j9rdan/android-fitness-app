@@ -56,8 +56,8 @@ public class SelectMusclesActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_muscles);
 
-        editor.remove("targetedMuscle");
-        editor.apply();
+//        editor.remove("targetedMuscle");
+//        editor.apply();
 
         // define shared preferences
         pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

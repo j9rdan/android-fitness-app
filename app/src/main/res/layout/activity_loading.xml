@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_bg"
     tools:context=".LoadingActivity">
 
     <TextView
@@ -24,6 +25,7 @@
         android:layout_width="173dp"
         android:layout_height="165dp"
         android:layout_marginTop="32dp"
+        android:indeterminateTint="@color/my_cards"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -139,12 +139,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProgramData() {
 
+        Log.w("UID", mAuth.getCurrentUser().getUid());
+
         // check if current user has completed sign up flow:
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.hasChild("program_type")) {
                     startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                } else if (!snapshot.hasChild("split")){
+                    startActivity(new Intent(HomeActivity.this, ChooseSplitActivity.class));
                 } else {
                     // get user program split & update UI
                     userRef.child("split").addValueEventListener(new ValueEventListener() {
@@ -193,9 +197,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             for (i = 0; i < storedWorkouts_al.size(); i++) {
                                 if (storedWorkouts_al.get(i).getKey().equals(today)) break;
                             }
-                            String startDate = storedWorkouts_al.get(0).getKey();
-//                            editor.putString("startDate", startDate);
-//                            editor.apply();
 
                             Log.w("LAST WORKOUT", storedWorkouts_al.get((storedWorkouts_al.size()-1)).getKey());
 

@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_bg"
     tools:context=".HomeActivity">
 
     <Button
         android:id="@+id/btn_startWorkout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/my_btn"
         android:fontFamily="@font/poppins_bold"
         android:text="Start"
         android:textAllCaps="false"
@@ -17,14 +19,15 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
+        app:layout_constraintVertical_bias="0.24000001" />
 
     <androidx.gridlayout.widget.GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="32dp"
         app:alignmentMode="alignMargins"
         app:columnCount="2"
@@ -37,7 +40,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/my_cards"
             app:cardCornerRadius="12dp"
             app:cardElevation="6dp"
             app:layout_columnWeight="1"
@@ -72,7 +76,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/my_cards"
             app:cardCornerRadius="12dp"
             app:cardElevation="6dp"
             app:layout_columnWeight="1"
@@ -108,9 +113,10 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="391dp"
-        android:layout_height="311dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="337dp"
+        android:layout_height="345dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/my_secondary"
         android:dateTextAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -123,13 +129,13 @@
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemBackground="@color/my_btn"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemBackground="@color/purple_500"
-        app:itemTextColor="@drawable/selector"
-        app:itemIconTint="@drawable/selector"
-        app:menu="@menu/menu_navigation"/>
+        app:menu="@menu/menu_navigation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

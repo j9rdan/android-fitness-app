@@ -24,4 +24,8 @@
     <string name="edit_profile">Edit profile</string>
     <string name="my_profile">My profile</string>
     <string name="log_out">Log out</string>
+    <string name="sign_in">Sign in</string>
+    <string name="start">Start</string>
+    <string name="close">Close</string>
+    <string name="share">Share</string>
 </resources>
