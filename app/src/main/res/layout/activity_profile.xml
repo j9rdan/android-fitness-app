@@ -20,22 +20,6 @@
         app:menu="@menu/menu_navigation" />
 
     <Button
-        android:id="@+id/btn_editProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="@color/my_btn"
-        android:fontFamily="@font/poppins_bold"
-        android:text="@string/edit_profile"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        app:cornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameTxtView" />
-
-    <Button
         android:id="@+id/btn_logOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,8 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_editProfile"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameTxtView" />
 
     <ImageView
         android:id="@+id/imageView"

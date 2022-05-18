@@ -5,8 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,7 +20,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -105,6 +109,16 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
                     public void onClick(View view) {
                         String[] results = adjustVolume(workoutData);
                         updateDatabase(results);
+
+                        makeChannel();
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        Intent drinkWaterIntent = new Intent(EvaluationActivity.this,Notification.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(EvaluationActivity.this, 0, drinkWaterIntent, PendingIntent.FLAG_IMMUTABLE);//creates pending intent
+                        long timeAtExit= System.currentTimeMillis();
+
+                        long wait = 1000;
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,timeAtExit+wait,pendingIntent);//sets the pending intent for 20 seconds later
+
                         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,10 +142,22 @@ public class EvaluationActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    @Override
-    public void onClick(View view) {
 
+    private void makeChannel(){
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name ="channel";
+            String description="my gym channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifyUpdate",name,importance);//uses the id of the remindplay to setup a notifcation channel
+            channel.setDescription(description);
+            NotificationManager notificationManager=getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
+
+    @Override
+    public void onClick(View view) { }
 
     public ArrayList<String> getRatings() {
 

@@ -19,7 +19,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private BottomNavigationView bottomNav;
     private TextView usernameTxtView;
-    private Button btn_editProfile, btn_logOut;
+    private Button btn_logOut;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -42,8 +42,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // initialise activity components
         usernameTxtView = findViewById(R.id.usernameTxtView);
         usernameTxtView.setText(username);
-        btn_editProfile = findViewById(R.id.btn_editProfile);
-        btn_editProfile.setOnClickListener(this);
         btn_logOut = findViewById(R.id.btn_logOut);
         btn_logOut.setOnClickListener(this);
         bottomNav = findViewById(R.id.bottomNav);
@@ -77,10 +75,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_editProfile:
-                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
-                break;
-
             case R.id.btn_logOut:
                 mAuth.signOut();
                 startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
