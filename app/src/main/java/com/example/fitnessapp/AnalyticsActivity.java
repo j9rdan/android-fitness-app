@@ -23,13 +23,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnalyticsActivity extends AppCompatActivity {
 
     private TextView startDate, workoutCount, lastTarget;
     private BottomNavigationView bottomNav;
-
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
 
     // get instances of firebase auth & realtime db
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -41,10 +41,6 @@ public class AnalyticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analytics);
-
-        // define shared preferences
-        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = pref.edit();
 
         startDate = findViewById(R.id.startDateTxtView);
         workoutCount = findViewById(R.id.workoutCount);
@@ -69,20 +65,24 @@ public class AnalyticsActivity extends AppCompatActivity {
             @Override public void onCancelled(@NonNull DatabaseError error) { }
         });
 
-//        workoutsRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.hasChildren()) {
-//                    for (int i = 0; i <= (snapshot.getChildrenCount() - (snapshot.getChildrenCount()-1)); i++) {
-//                        String date = snapshot.child(snapshot.getKey()).getValue(String.class);
-//                        startDate.setText(date);
-//                    }
-//                } else {
-//                    startDate.setText("-");
-//                }
-//            }
-//            @Override public void onCancelled(@NonNull DatabaseError error) { }
-//        });
+        // get start date
+        workoutsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.getChildrenCount() >= 2) {
+                    // get children & store in array list
+                    Iterable<DataSnapshot> storedWorkouts_i = snapshot.getChildren();
+                    List<DataSnapshot> storedWorkouts_al = new ArrayList<>();
+                    for (DataSnapshot d : storedWorkouts_i) {
+                        storedWorkouts_al.add(d);
+                    }
+                    startDate.setText(storedWorkouts_al.get(1).getKey());
+                } else {
+                    startDate.setText("-");
+                }
+            }
+            @Override public void onCancelled(@NonNull DatabaseError error) { }
+        });
 
         bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.progress);
