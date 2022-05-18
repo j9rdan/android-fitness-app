@@ -1,0 +1,113 @@
+.row{display:-ms-flexbox; display:flex; -ms-flex-wrap:wrap; flex-wrap:wrap; margin-right:-15px; margin-left:-15px;}
+
+.col{-ms-flex-preferred-size:0; flex-basis:0; -ms-flex-positive:1; flex-grow:1; max-width:100%;}
+.col-1{-ms-flex: 0 0 10%;	flex: 0 0 10%; max-width: 10%;}
+.col-2{-ms-flex: 0 0 20%; flex: 0 0 20%; max-width: 20%;}
+.col-3{-ms-flex: 0 0 30%; flex: 0 0 30%; max-width: 30%;}
+.col-third{-ms-flex: 0 0 33.333333333%; flex: 0 0 33.333333333%; max-width: 33.333333333%;}
+.col-4{-ms-flex: 0 0 40%; flex: 0 0 40%; max-width: 40%;}
+.col-5{-ms-flex: 0 0 50%; flex: 0 0 50%; max-width: 50%;}
+.col-6{-ms-flex: 0 0 60%; flex: 0 0 60%; max-width: 60%;}
+.col-8{-ms-flex: 0 0 80%; flex: 0 0 80%; max-width: 80%;}
+
+.offset-1{margin-left: 10%;}
+.offset-2{margin-left: 20%;}
+.offset-3{margin-left: 30%;}
+.offset-4{margin-left: 40%;}
+.offset-5{margin-left: 50%;}
+
+/* app colour pallet */
+:root {
+	--sec-green: #A4C3B2;		/* secondary green */
+	--acc-green: #CCE3DE;      /* accent green */
+	--main-green: #3D5249;		/* dark green actions */
+	--off-white: #F6FFF8;	    /* off-off-White bg */
+}
+
+body {
+	margin: 0 0;
+	font-family: Poppins;
+}
+
+/*	nav bar */
+ul.topnav {
+	list-style-type: none;
+	margin: 0 0;
+	overflow: hidden;
+	background-color: var(--sec-green);
+	color: var(--main-green);
+	padding-inline-start: 0;
+	padding: 0 18%;
+}
+
+ul.topnav li {
+	float: left;
+}
+
+
+ul.topnav li a {
+	display: block;
+	color: off-white;
+	text-align: center;
+	width: 90px;
+	text-decoration: none;
+	padding: 20px 0;
+}
+
+ul.topnav li a:hover:not(.active) {
+	color: black;
+	background-color: var(--acc-green);
+}
+
+ul.topnav li a.active {
+	font-weight: bold;
+    color: var(--off-white);
+    background-color: var(--main-green);
+}
+
+ul.topnav li.right {
+	float: right;
+}
+
+.logo {
+	display: block;
+	margin: 5px auto 0 auto;
+	width: 60%;
+}
+
+.center-text {
+	text-align: center;
+}
+
+.container {
+	margin: 0 20%;
+}
+
+.bottom-spacer {
+    margin-top: 150px;
+}
+
+@media screen and (max-width: 762px) {
+	ul.topnav {
+		padding: 0 9%;
+	}
+	.container {
+		margin: 0 12%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	ul.topnav li.right, 
+	ul.topnav li {
+		float: none;
+	}
+	ul.topnav li a {
+		width: auto;
+	}
+	ul.topnav {
+		padding: 0 0;
+	}
+	.container {
+		margin: 0 7%;
+	}
+}
